@@ -68,5 +68,9 @@ public class ZombiesManager {
 		return canAdd;
 	}
 
+	public boolean damage(Position p, int damage) {
+		return this.zombies.damage(p, damage);
+	}
+
 	// TODO fill your code
 }

@@ -14,6 +14,9 @@ public class Game {
 	private Long longSeed;
 	private Random rand;
 	private boolean playerQuit;
+	private SunflowerList sunflowerList;
+	private PeashooterList peashooterList;
+	private ZombiesManager zombiesManager; 
 
 	public Game(Long seed, Level level) {
 
@@ -68,13 +71,16 @@ public class Game {
 		
 	}
 
-	public boolean isInsideBoard(Position position) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isInsideBoard(Position p) {
+		return p.row() >= 0 && p.row() < Game.NUM_ROWS && p.col() >= 0 && p.col() < Game.NUM_COLS; 
 	}
 
 	public void addGameObject(String plantName, int cost) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public boolean attackZombie(Position p, int damage) {
+		return zombiesManager.damage(p, damage); 
 	}
 }

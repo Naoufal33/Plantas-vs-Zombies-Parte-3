@@ -13,6 +13,7 @@ public class Peashooter {
 	private int health;
 	private Position position;
 	private Game game;
+
 	
 	public Peashooter(Position position, Game game) {
 		this.position = position;
@@ -28,21 +29,30 @@ public class Peashooter {
 		return this.position.equals(p);
 	}
 
-	public static Object getDescription() {
+	public static String getDescription() {
 		return String.format(Messages.PEASHOOTER_DESCRIPTION, COST, DAMAGE, INITIAL_HEALTH);
 	}
 
 	public boolean isAlive() {
-		return health > 0;
+		return health > 0; 
 	}
 
 	public void update() {
+		shoot(); 
 	}
 
 	private void shoot() {
+		boolean hit = false; 
+		int c = this.position.col() + 1;
+		while(c < Game.NUM_COLS && !hit) {
+			Position target = new Position(this.position.row(), c); 
+			hit = game.attackZombie(target, DAMAGE); 
+			c++; 
+		}
 	}
 
 	public void receiveDamage(int damage) {
+		this.health -=damage; 
 	}
 
 	public String shortName() {

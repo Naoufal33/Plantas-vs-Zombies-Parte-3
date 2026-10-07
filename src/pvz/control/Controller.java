@@ -1,7 +1,5 @@
 package pvz.control;
 
-import java.util.ArrayList;
-
 import pvz.logic.Game;
 import pvz.logic.Position;
 import pvz.logic.gameObjects.Peashooter;
@@ -24,63 +22,107 @@ public class Controller {
 
 	private final Game game;
 	private final GameView view;
-	private boolean exit; 
+	private boolean exit;
 
 	public Controller(Game game) {
 		this.game = game;
 		this.view = new GamePrinter(game);
-		this.exit = false; 
+		this.exit = false;
 	}
 
 	/**
 	 * Runs the game logic.
 	 */
 	public void run() {
-		view.showGame(); 
-		while(!this.exit) {
-			view.getPrompt();
+		view.showGame();
+		while (!this.exit) {
+			String words[] = view.getPrompt();
+			String msg = parseUserInput(words);
+
+			if (msg != null)
+				view.showMessage(msg);
+
 		}
 		view.showEndMessage();
 	}
 
 	private String parseUserInput(String[] words) {
-		if(words == null) return null; 
-		
-		String s = words[0]; 
-		s.toLowerCase(); 
-		
-		if(s.equals("a") || s.equals("add")) {
-			return null; 
-		}
-		else if(s.equals("l") || s.equals("list")) {
-			String r = (String) Sunflower.getDescription(); 
-			String h = (String) Peashooter.getDescription(); 
-			String sb = r + h; 
-			return sb; 
-		}
-		else if(s.equals("r") || s.equals("reset")) {
+		if (words == null || words.length == 0)
 			return null;
-		}
-		else if(s.equals("h") || s.equals("help")) {
-			String t = Messages.HELP; 
-			return t; 
-		}
-		else if(s == "e" || s =="exit") {
-			this.exit = true; 
-			
-		}
-		else if(s == "n" || s =="none") {
-			return null;
+		if (words.length > 0) {
+			String s = words[0];
+
+			if (s.equals("a") || s.equals("add")) {
+				// Comprobar que tiene los parametros [add, planta, columna, fila]
+				if (words.length < 4) {
+					view.showError(Messages.COMMAND_PARAMETERS_MISSING);
+					return null;
+				}
+				// Comprobar que existe la planta
+				if (!isValidGameObject(words)) {
+					view.showError(Messages.INVALID_GAME_OBJECT);
+					return null;
+				}
+				String plantName = words[1];
+				// Crear la posicion
+				int col = Integer.parseInt(words[2]);
+				int row = Integer.parseInt(words[3]);
+
+				Position pos = new Position(row, col);
+				if (!isValidPosition(pos)) {
+					view.showError(Messages.INVALID_POSITION);
+					return null;
+				}
+				//Comprobamos si podemos comprar la planta
+				int cost = plantCost(plantName);
+				if (game.getCoins() < cost) {
+					view.showError(Messages.NOT_ENOUGH_COINS);
+					return null;
+				}
+				//Crear la planta y repintamos el tablero
+				game.addGameObject(plantName, cost);
+				view.showGame();
+				return null;
+			} else if (s.equals("l") || s.equals("list")) {
+				return Messages.LIST;
+			} else if (s.equals("r") || s.equals("reset")) {
+				game.reset();
+				view.showGame();
+				return null;
+			} else if (s.equals("h") || s.equals("help")) {
+				return Messages.HELP;
+			} else if (s.equals("e") || s.equals("exit")) {
+				this.exit = true;
+
+			} else if (s.isEmpty() || s.equals("n") || s.equals("none")) {
+				game.update();
+				view.showGame();
+				return null;
+			}
+			else {
+				view.showError(Messages.UNKNOWN_COMMAND);
+				return null; 
+			}
+
 		}
 		return null;
 	}
 
 	private boolean isValidPosition(Position position) {
-		return false;
+		return game.isInsideBoard(position);
 	}
 
 	private boolean isValidGameObject(String[] objectName) {
-		return false;
+		return objectName[1].equals("s") || objectName[1].equals("sunflower") || objectName[1].equals("p")
+				|| objectName[1].equals("peashooter");
+	}
+
+	private int plantCost(String name) {
+		if (name.equals("s") || name.equals("sunflower")) {
+			return Sunflower.COST;
+		} else {
+			return Peashooter.COST;
+		}
 	}
 
 }

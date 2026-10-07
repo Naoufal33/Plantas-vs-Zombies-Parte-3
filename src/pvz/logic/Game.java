@@ -62,4 +62,19 @@ public class Game {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean isInsideBoard(Position position) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void addGameObject(String plantName, int cost) {
+		// TODO Auto-generated method stub
+		
+	}
 }

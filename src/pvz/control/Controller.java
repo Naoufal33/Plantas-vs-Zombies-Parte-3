@@ -49,19 +49,19 @@ public class Controller {
 		String s = words[0]; 
 		s.toLowerCase(); 
 		
-		if(s == "a" || s == "add") {
+		if(s.equals("a") || s.equals("add")) {
 			return null; 
 		}
-		else if(s == "l" || s =="list") {
+		else if(s.equals("l") || s.equals("list")) {
 			String r = (String) Sunflower.getDescription(); 
 			String h = (String) Peashooter.getDescription(); 
 			String sb = r + h; 
 			return sb; 
 		}
-		else if(s == "r" || s =="reset") {
+		else if(s.equals("r") || s.equals("reset")) {
 			return null;
 		}
-		else if(s == "h" || s =="help") {
+		else if(s.equals("h") || s.equals("help")) {
 			String t = Messages.HELP; 
 			return t; 
 		}

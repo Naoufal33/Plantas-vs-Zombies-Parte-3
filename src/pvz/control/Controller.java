@@ -59,11 +59,11 @@ public class Controller {
 					return null;
 				}
 				// Comprobar que existe la planta
-				if (!isValidGameObject(words)) {
+				String plantName = words[1];
+				if (!isValidGameObject(plantName)) {
 					view.showError(Messages.INVALID_GAME_OBJECT);
 					return null;
 				}
-				String plantName = words[1];
 				// Crear la posicion
 				int col = Integer.parseInt(words[2]);
 				int row = Integer.parseInt(words[3]);
@@ -80,7 +80,7 @@ public class Controller {
 					return null;
 				}
 				//Crear la planta y repintamos el tablero
-				game.addGameObject(plantName, cost);
+				game.addGameObject(plantName, pos);
 				view.showGame();
 				return null;
 			} else if (s.equals("l") || s.equals("list")) {
@@ -109,12 +109,12 @@ public class Controller {
 	}
 
 	private boolean isValidPosition(Position position) {
-		return game.isInsideBoard(position);
+		return game.isInsideBoard(position) && game.isEmpty(position);
 	}
 
-	private boolean isValidGameObject(String[] objectName) {
-		return objectName[1].equals("s") || objectName[1].equals("sunflower") || objectName[1].equals("p")
-				|| objectName[1].equals("peashooter");
+	private boolean isValidGameObject(String objectName) {
+		return objectName.equals("s") || objectName.equals("sunflower") || objectName.equals("p")
+				|| objectName.equals("peashooter");
 	}
 
 	private int plantCost(String name) {

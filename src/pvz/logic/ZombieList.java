@@ -27,17 +27,22 @@ public class ZombieList {
 	}
 
 	public boolean damage(Position p, int damage) {
-		for(Zombie z: zList) {
-			if(z.isInPosition(p) && z.isAlive()) {
+		for (Zombie z : zList) {
+			if (z.isInPosition(p) && z.isAlive()) {
 				z.receiveAttack(damage);
-				return true; 
+				return true;
 			}
 		}
-		return false; 
+		return false;
 	}
 
 	public boolean isEmpty(Position p) {
-		return false;
+		for (Zombie z : zList) {
+			if (z.isInPosition(p) && z.isAlive()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void update() {
@@ -52,7 +57,7 @@ public class ZombieList {
 			if (!it.next().isAlive())
 				it.remove();
 		}
-		this.numberOfZombies = zList.size(); 
+		this.numberOfZombies = zList.size();
 	}
 
 	public boolean anyInColumn(int column) {

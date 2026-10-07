@@ -7,7 +7,8 @@ import pvz.control.Level;
 /**
  * Manages the full lifecycle of zombies for a game session.
  *
- * <p>Responsibilities: deciding each cycle whether to spawn a new zombie
+ * <p>
+ * Responsibilities: deciding each cycle whether to spawn a new zombie
  * (probabilistically, subject to the remaining quota from {@link Level}),
  * delegating per-cycle updates and dead-removal to the underlying
  * {@link ZombieList}, and answering win/loss queries
@@ -41,7 +42,7 @@ public class ZombiesManager {
 	private boolean shouldAddZombie() {
 		return rand.nextDouble() < level.getZombieFrequency();
 	}
-	
+
 	/**
 	 * Return a random row within the board limits.
 	 * 
@@ -50,7 +51,7 @@ public class ZombiesManager {
 	private int randomZombieRow() {
 		return rand.nextInt(Game.NUM_ROWS);
 	}
-	
+
 	public boolean addZombie() {
 		int row = randomZombieRow();
 		return addZombie(row);
@@ -59,10 +60,9 @@ public class ZombiesManager {
 	public boolean addZombie(int row) {
 		Position zombiePosition = Game.newZombiePosition(row);
 
-		boolean canAdd = this.remainingZombies > 0 && shouldAddZombie()
-				&& game.isEmpty(zombiePosition);
+		boolean canAdd = this.remainingZombies > 0 && shouldAddZombie() && game.isEmpty(zombiePosition);
 
-		if(canAdd) {
+		if (canAdd) {
 			// TODO fill your code
 		}
 		return canAdd;
@@ -70,6 +70,20 @@ public class ZombiesManager {
 
 	public boolean damage(Position p, int damage) {
 		return this.zombies.damage(p, damage);
+	}
+
+	public int getRemainingZombies() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public boolean isEmpty(Position pos) {
+		return zombies.isEmpty(pos);
+	}
+
+	public String iconInPosition(Position position) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// TODO fill your code

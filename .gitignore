@@ -1,0 +1,16 @@
+# Archivos de compilacion Java
+bin/
+*.class
+
+# Archivos de empaquetado y temporales
+*.jar
+*.war
+*.zip
+
+# Metadatos de Eclipse locales / usuario
+.metadata/
+*.log
+
+# Archivos de sistema operativo
+Thumbs.db
+.DS_Store

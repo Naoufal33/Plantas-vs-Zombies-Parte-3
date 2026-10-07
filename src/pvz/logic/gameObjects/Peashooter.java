@@ -1,0 +1,55 @@
+package pvz.logic.gameObjects;
+
+import pvz.logic.Game;
+import pvz.logic.Position;
+import pvz.view.Messages;
+
+public class Peashooter {
+
+	public static final int COST = 50;
+	private static final int DAMAGE = 1;
+	private static final int INITIAL_HEALTH = 3;
+	
+	private int health;
+	private Position position;
+	private Game game;
+	
+	public Peashooter(Position position, Game game) {
+		this.position = position;
+		health = INITIAL_HEALTH;
+		this.game = game;
+	}
+
+	public String getIcon() {
+		return String.format(Messages.PEASHOOTER_ICON, this.health);
+	}
+
+	public boolean isInPosition(Position p) {
+		return this.position.equals(p);
+	}
+
+	public static Object getDescription() {
+		return String.format(Messages.PEASHOOTER_DESCRIPTION, COST, DAMAGE, INITIAL_HEALTH);
+	}
+
+	public boolean isAlive() {
+		return health > 0;
+	}
+
+	public void update() {
+	}
+
+	private void shoot() {
+	}
+
+	public void receiveDamage(int damage) {
+	}
+
+	public String shortName() {
+		return "P";
+	}
+
+	public String longName() {
+		return "[P]eashooter";
+	}
+}

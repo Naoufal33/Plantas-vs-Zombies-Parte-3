@@ -48,8 +48,12 @@ public class PeashooterList {
 		return empty;
 	}
 
+	private void removeFromIndex(int index) {
+		
+	}
+	
 	public void add(Peashooter p) {
-		pList.add(p);
+		pList.length;
 		this.numberOfPeashooters++;
 	}
 

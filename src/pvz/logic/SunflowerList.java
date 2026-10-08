@@ -12,7 +12,7 @@ public class SunflowerList {
 	
 	public SunflowerList() {
 		this.numberOfSunflowers = 0;
-		sList = new ArrayList<>();
+		sList = new Sunflower[32];
 	}
 	
 	public String iconInPosition(Position pos) {
@@ -28,12 +28,26 @@ public class SunflowerList {
 		return true;
 	}
 
+	public void removeDead() {
+		
+	}
+	
+	public void update() {
+		
+	}
+	
 	public void add(Sunflower sunflower) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
+	private void removeFromIndex(int index){
+		
+	}
 	
+	public void receiveDamage(Position p, int damage) {
+		
+	}
 
 
 }

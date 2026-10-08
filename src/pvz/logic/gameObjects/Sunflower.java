@@ -56,11 +56,11 @@ public class Sunflower {
 	}
 	
 			
-	public String shortName() {
+	public static String shortName() {
 		return "S";
 	}
 
-	public String longName() {
+	public static String longName() {
 		return "[S]unflower";
 	}
 

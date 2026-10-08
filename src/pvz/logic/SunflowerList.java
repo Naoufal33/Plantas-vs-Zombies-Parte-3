@@ -25,8 +25,14 @@ public class SunflowerList {
 	}
 	
 	public boolean isEmpty(Position pos) {
-		return true;
-	}
+		boolean empty = true;
+		for (Sunflower s : sList) {
+			if (s.isInPosition(pos) && s.isAlive()) {
+				empty = false;
+			}
+		}
+		return empty;	
+		}
 
 	public void removeDead() {
 		
@@ -46,7 +52,12 @@ public class SunflowerList {
 	}
 	
 	public void receiveDamage(Position p, int damage) {
-		
+		for(Sunflower s: sList) {
+			if(s.isInPosition(p) && s.isAlive()) {
+				s.receiveDamage(damage);
+				break; 
+			}
+		}
 	}
 
 

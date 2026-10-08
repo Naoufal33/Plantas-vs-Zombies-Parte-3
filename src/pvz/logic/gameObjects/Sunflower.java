@@ -8,7 +8,7 @@ public class Sunflower {
 	
 	public static final int COST = 20;
 	private static final int DAMAGE = 0;
-	private static final int GENERETAD_SUNCOINS = 10;
+	private static final int GENERATED_SUNCOINS = 10;
 	private static final int INITIAL_HEALTH = 1;
 	private static final int COOLDOWN = 3; 
 	
@@ -41,12 +41,21 @@ public class Sunflower {
 	}
 
 	public void update() {
+		cyclesSinceLastCoinGeneration++;
+		if (cyclesSinceLastCoinGeneration == COOLDOWN) {
+			game.generetaCoins(GENERATED_SUNCOINS);
+			cyclesSinceLastCoinGeneration  = 0;
+		}
 	}
 	
 	public void receiveDamage(int damage) {
-		
+		this.health -= damage;
+		if (this.health < 0) {
+			this.health = 0;
+		}
 	}
 	
+			
 	public String shortName() {
 		return "S";
 	}

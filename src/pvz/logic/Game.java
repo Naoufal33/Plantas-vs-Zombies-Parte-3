@@ -33,6 +33,33 @@ public class Game {
 
 	}
 
+	public String positionToString(Position position) {
+		if (this.peashooterList != null) {
+			String icon = this.peashooterList.iconInPosition(position);
+			if (icon != null && !icon.isEmpty()) {
+				return icon;
+			}
+		}
+		if (this.sunflowerList != null) {
+			String icon = this.sunflowerList.iconInPosition(position);
+			if (icon != null && !icon.isEmpty()) {
+				return icon;
+			}
+		}
+		if (this.zombiesManager != null) {
+			String icon = this.zombiesManager.iconInPosition(position);
+			if (icon != null && !icon.isEmpty()) {
+				return icon;
+			}
+		}
+		return "";
+	}
+
+	public boolean checkGameObject(String name) {
+		return name.equalsIgnoreCase(Peashooter.shortName()) || name.equalsIgnoreCase(Peashooter.longName())
+				|| name.equalsIgnoreCase(Sunflower.shortName()) || name.equalsIgnoreCase(Sunflower.longName());
+	}
+
 	public int getCycles() {
 		return cycles;
 	}
@@ -63,31 +90,36 @@ public class Game {
 	public void update() {
 	}
 
-	public String positionToString(Position position) {
-		if (this.peashooterList != null) {
-			String icon = this.peashooterList.iconInPosition(position);
-			if (icon != null && !icon.isEmpty()) {
-				return icon;
-			}
-		}
-		if (this.sunflowerList != null) {
-			String icon = this.sunflowerList.iconInPosition(position);
-			if (icon != null && !icon.isEmpty()) {
-				return icon;
-			}
-		}
-		if (this.zombiesManager != null) {
-			String icon = this.zombiesManager.iconInPosition(position);
-			if (icon != null && !icon.isEmpty()) {
-				return icon;
-			}
-		}
-		return "";
+	public void reset() {
+		// TODO Auto-generated method stub
+
 	}
 
-	public static Position newZombiePosition(int row) {
-		// TODO Auto-generated method stub
-		return null;
+	public void addGameObject(String plantName, Position pos) {
+		if (plantName.equals(Peashooter.shortName()) || plantName.equals(Peashooter.longName())) {
+			this.peashooterList.add(new Peashooter(pos, this));
+			buyWithCoins(Peashooter.COST);
+		} else if (plantName.equals("s") || plantName.equals("sunflower")) {
+			this.sunflowerList.add(new Sunflower(pos, this));
+			buyWithCoins(Sunflower.COST);
+		}
+
+	}
+
+	public void generateCoins(int amount) {
+
+	}
+
+	private void buyWithCoins(int cost) {
+		this.coins -= cost;
+	}
+
+	public boolean attackZombie(Position p, int damage) {
+		return zombiesManager.damage(p, damage);
+	}
+
+	public void attackPlant(Position p, int damage) {
+
 	}
 
 	public boolean isEmpty(Position pos) {
@@ -96,37 +128,13 @@ public class Game {
 				&& (zombiesManager == null || zombiesManager.isEmpty(pos));
 	}
 
-	public void reset() {
+	public static Position newZombiePosition(int row) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	public boolean isInsideBoard(Position p) {
 		return p.row() >= 0 && p.row() < Game.NUM_ROWS && p.col() >= 0 && p.col() < Game.NUM_COLS;
 	}
 
-	public void attackZombie(Position p, int damage) {
-		return zombiesManager.damage(p, damage);
-	}
-	public void attackPlant(Position p, int damage) {
-		
-	}
-
-	public void addGameObject(String plantName, Position pos) {
-		if (plantName.equals("p") || plantName.equals("peashooter")) {
-			this.peashooterList.add(new Peashooter(pos, this));
-			this.coins -= Peashooter.COST;
-		} else if (plantName.equals("s") || plantName.equals("sunflower")) {
-			this.sunflowerList.add(new Sunflower(pos, this));
-			this.coins -= Sunflower.COST;
-		}
-
-	}
-	
-	public boolean checkGameObject(String name) {
-		return false; 
-	}
-	public void generetaCoins(int amount) {
-		
-	}
 }

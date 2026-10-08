@@ -47,12 +47,12 @@ public class Sunflower {
 		
 	}
 	
-	public String shortName() {
+	public static String shortName() {
 		return "S";
 	}
 
-	public String longName() {
-		return "[S]unflower";
+	public static String longName() {
+		return "Sunflower";
 	}
 
 }

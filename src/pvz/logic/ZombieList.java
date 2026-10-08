@@ -7,15 +7,15 @@ import pvz.logic.gameObjects.Zombie;
 
 public class ZombieList {
 	private int numberOfZombies;
-	private ArrayList<Zombie> zList;
+	private Zombie[] zList;
 
 	public ZombieList() {
 		this.numberOfZombies = 0;
-		zList = new ArrayList<Zombie>();
+		zList = new Zombie[32];
 	}
 
 	public int size() {
-		return zList.size();
+		return numberOfZombies;
 	}
 
 	public String iconInPosition(Position p) {
@@ -23,7 +23,8 @@ public class ZombieList {
 	}
 
 	public void add(Zombie z) {
-		zList.add(z);
+		zList[numberOfZombies] = z;
+		this.numberOfZombies++; 
 	}
 
 	public boolean damage(Position p, int damage) {
@@ -52,12 +53,7 @@ public class ZombieList {
 	}
 
 	public void removeDead() {
-		Iterator<Zombie> it = zList.iterator();
-		while (it.hasNext()) {
-			if (!it.next().isAlive())
-				it.remove();
-		}
-		this.numberOfZombies = zList.size();
+		
 	}
 
 	public boolean anyInColumn(int column) {

@@ -11,55 +11,65 @@ public class PeashooterList {
 
 	public PeashooterList() {
 		this.numberOfPeashooters = 0;
-		pList = new Peashooter[32];
+		pList = new Peashooter[Game.NUM_COLS * Game.NUM_ROWS];
 	}
 
 	public String iconInPosition(Position pos) {
-		for (Peashooter p : pList) {
-			if (p.isInPosition(pos) && p.isAlive()) {
-				return p.getIcon();
+		for (int i = 0; i < this.numberOfPeashooters; i++ ) {
+			if (this.pList[i].isInPosition(pos) && pList[i].isAlive()) {
+				return pList[i].getIcon();
 			}
 		}
 		return "";
 	}
 
 	public void update() {
-		for (Peashooter p : pList) {
-			p.update();
+		for (int i = 0; i < this.numberOfPeashooters; i++) {
+			pList[i].update();
 		}
 	}
 
 	public void removeDead() {
-		Iterator<Peashooter> it = pList.iterator();
-		while (it.hasNext()) {
-			if (!it.next().isAlive())
-				it.remove();
+		int i = 0; 
+		while(i < this.numberOfPeashooters) {
+			if(!pList[i].isAlive()) {
+				removeFromIndex(i); 
+			}
+			else {
+				i++; 
+			}
 		}
-		this.numberOfPeashooters = pList.size(); 
 	}
 
 	public boolean isEmpty(Position pos) {
-		boolean empty = true;
-		for (Peashooter p : pList) {
-			if (p.isInPosition(pos) && p.isAlive()) {
-				empty = false;
+		for (int i = 0; i < this.numberOfPeashooters; i++) {
+			if (pList[i].isInPosition(pos) && pList[i].isAlive()) {
+				return false; 
 			}
 		}
-		return empty;
+		return true;
 	}
 
 	public void add(Peashooter p) {
-		pList.add(p);
+		pList[this.numberOfPeashooters] = p; 
 		this.numberOfPeashooters++;
 	}
 
 	public void receiveDamage(Position pos, int damage) {
-		for(Peashooter p: pList) {
-			if(p.isInPosition(pos) && p.isAlive()) {
-				p.receiveDamage(damage);
+		for(int i = 0; i < this.numberOfPeashooters; i++ ) {
+			if(pList[i].isInPosition(pos) && pList[i].isAlive()) {
+				pList[i].receiveDamage(damage);
 				break; 
 			}
 		}
+	}
+	
+	private void removeFromIndex(int index) {
+		for(int i = index; i < this.numberOfPeashooters-1; i++) {
+			pList[i] = pList[i+1]; 
+		}
+		pList[this.numberOfPeashooters- 1] = null; 
+		this.numberOfPeashooters--; 
 	}
 
 }

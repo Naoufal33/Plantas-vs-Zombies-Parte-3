@@ -43,6 +43,13 @@ public class Zombie {
 	}
 	
 	public void update() {
+		Position newPos = new Position(this.position.row(), this.position.col() - 1); 
+		if(game.isEmpty(newPos)) {
+			this.position = newPos;
+		}
+		else {
+			
+		}
 	}
 	
 	private boolean canMove() { return false; }

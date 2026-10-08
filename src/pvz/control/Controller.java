@@ -113,8 +113,7 @@ public class Controller {
 	}
 
 	private boolean isValidGameObject(String objectName) {
-		return objectName.equals("s") || objectName.equals("sunflower") || objectName.equals("p")
-				|| objectName.equals("peashooter");
+		return game.checkGameObject(objectName); 
 	}
 
 	private int plantCost(String name) {

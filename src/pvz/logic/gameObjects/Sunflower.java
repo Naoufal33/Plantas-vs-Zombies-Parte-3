@@ -32,7 +32,7 @@ public class Sunflower {
 	}
 
 
-	public static Object getDescription() {
+	public static String getDescription() {
 		return String.format(Messages.SUNFLOWER_DESCRIPTION, COST, DAMAGE, INITIAL_HEALTH);
 	}
 	
@@ -43,7 +43,7 @@ public class Sunflower {
 	public void update() {
 		cyclesSinceLastCoinGeneration++;
 		if (cyclesSinceLastCoinGeneration == COOLDOWN) {
-			game.generetaCoins(GENERATED_SUNCOINS);
+			game.generateCoins(GENERATED_SUNCOINS);
 			cyclesSinceLastCoinGeneration  = 0;
 		}
 	}
@@ -54,14 +54,12 @@ public class Sunflower {
 			this.health = 0;
 		}
 	}
-	
-			
 	public static String shortName() {
 		return "S";
 	}
 
 	public static String longName() {
-		return "[S]unflower";
+		return "Sunflower";
 	}
 
 }

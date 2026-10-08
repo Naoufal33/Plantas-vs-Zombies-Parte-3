@@ -55,11 +55,11 @@ public class Peashooter {
 		this.health -=damage; 
 	}
 
-	public String shortName() {
+	public static String shortName() {
 		return "P";
 	}
 
-	public String longName() {
-		return "[P]eashooter";
+	public static String longName() {
+		return "Peashooter";
 	}
 }

@@ -42,5 +42,11 @@ public class Position {
 	public int hashCode() {
 		return Objects.hash(row, col); 
 	}
+	public Position left() {
+		return new Position(this.row(), this.col-1);
+	}
+	public Position right() {
+		return new Position(this.row(), this.col+1);
+	}
 
 }

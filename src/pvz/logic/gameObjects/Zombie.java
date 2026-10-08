@@ -38,7 +38,9 @@ public class Zombie {
 		return position.col() == p.col();
 	}
 	
-	public void receiveAttack(int damage) {}
+	public void receiveAttack(int damage) {
+		
+	}
 	
 	public void update() {
 	}
@@ -52,6 +54,8 @@ public class Zombie {
 		return health > 0;
 	}
 	
-	private void attack() {}
+	private void attack() {
+		
+	}
 	
 }

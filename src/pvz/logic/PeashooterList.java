@@ -7,11 +7,11 @@ import pvz.logic.gameObjects.Peashooter;
 
 public class PeashooterList {
 	private int numberOfPeashooters;
-	private ArrayList<Peashooter> pList;
+	private Peashooter[] pList;
 
 	public PeashooterList() {
 		this.numberOfPeashooters = 0;
-		pList = new ArrayList<>();
+		pList = new Peashooter[32];
 	}
 
 	public String iconInPosition(Position pos) {

@@ -105,8 +105,11 @@ public class Game {
 		return p.row() >= 0 && p.row() < Game.NUM_ROWS && p.col() >= 0 && p.col() < Game.NUM_COLS;
 	}
 
-	public boolean attackZombie(Position p, int damage) {
+	public void attackZombie(Position p, int damage) {
 		return zombiesManager.damage(p, damage);
+	}
+	public void attackPlant(Position p, int damage) {
+		
 	}
 
 	public void addGameObject(String plantName, Position pos) {
@@ -118,5 +121,12 @@ public class Game {
 			this.coins -= Sunflower.COST;
 		}
 
+	}
+	
+	public boolean checkGameObject(String name) {
+		return false; 
+	}
+	public void generetaCoins(int amount) {
+		
 	}
 }

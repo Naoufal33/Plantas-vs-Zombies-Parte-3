@@ -6,11 +6,11 @@ import pvz.view.Messages;
 
 public class Zombie {
 
-	public static final int MOVE_EVERY_CYCLES = 1;
+	public static final int MOVE_EVERY_CYCLES = 2;
 	private static final int DAMAGE = 1;
 	private static final int INITIAL_HEALTH = 5;
 
-	private int cyclesSinceLastCoinMovement;
+	private int cyclesSinceLastMovement;
 	private int health;
 	private Position position;
 	private Game game;
@@ -18,7 +18,7 @@ public class Zombie {
 	public Zombie(Position position, Game game) {
 		this.position = position;
 		this.health = INITIAL_HEALTH;
-		cyclesSinceLastCoinMovement = 0; 
+		cyclesSinceLastMovement = 0; 
 		this.game = game;
 	}
 
@@ -39,22 +39,32 @@ public class Zombie {
 	}
 	
 	public void receiveAttack(int damage) {
-		
+		this.health = Math.max(0, this.health - damage); 
 	}
 	
 	public void update() {
-		Position newPos = new Position(this.position.row(), this.position.col() - 1); 
-		if(game.isEmpty(newPos)) {
-			this.position = newPos;
+		if(!isAlive()) {
+			return; 
 		}
-		else {
-			
+		if(game.isPlant(this.position.left())) {
+			attack(); 
+		}
+		else if(canMove()) {
+			move(); 
 		}
 	}
 	
-	private boolean canMove() { return false; }
+	private boolean canMove() {
+		return game.isEmpty(this.position.left()); 
+	}
 	
-	private void move() {}
+	private void move() {
+		cyclesSinceLastMovement++; 
+		if(cyclesSinceLastMovement >= MOVE_EVERY_CYCLES) {
+			this.position = this.position.left(); 
+			cyclesSinceLastMovement = 0; 
+		}
+	}
 	
 	
 	public boolean isAlive() {
@@ -62,7 +72,7 @@ public class Zombie {
 	}
 	
 	private void attack() {
-		
+		game.attackPlant(this.position.left(), DAMAGE);
 	}
 	
 }

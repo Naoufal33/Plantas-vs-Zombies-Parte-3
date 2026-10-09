@@ -68,7 +68,7 @@ public class ZombiesManager {
 		return canAdd;
 	}
 
-	public boolean damage(Position p, int damage) {
+	public boolean damageZombie(Position p, int damage) {
 		return this.zombies.damage(p, damage);
 	}
 
@@ -76,15 +76,26 @@ public class ZombiesManager {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	public boolean isEmpty(Position pos) {
-		return zombies.isEmpty(pos);
+	public boolean doZombiesReachedTheHouse() {
+		return zombies.anyInColumn(-1); 
 	}
-
 	public String iconInPosition(Position position) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public boolean isEmpty(Position pos) {
+		return zombies.isEmpty(pos);
+	}
+	public void update() {
+		zombies.update();
+		removeDead(); 
+	}
+	public boolean allZombiesWereKilled() {
+		return false; 
+	}
+	public void removeDead() {
+		zombies.removeDead();
+	}
 
-	// TODO fill your code
 }

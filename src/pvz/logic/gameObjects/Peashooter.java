@@ -52,7 +52,7 @@ public class Peashooter {
 	}
 
 	public void receiveDamage(int damage) {
-		this.health -=damage; 
+		this.health = Math.max(0, this.health - damage); 
 	}
 
 	public static String shortName() {

@@ -1,8 +1,5 @@
 package pvz.logic;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import pvz.logic.gameObjects.Zombie;
 
 public class ZombieList {
@@ -19,7 +16,13 @@ public class ZombieList {
 	}
 
 	public String iconInPosition(Position p) {
-		return null;
+		for(int i = 0; i< this.numberOfZombies; i++) {
+			if(zList[i].isInPosition(p) && zList[i].isAlive()) {
+				return zList[i].getIcon(); 
+			}
+		}
+		return ""; 
+		
 	}
 
 	public void add(Zombie z) {
@@ -28,9 +31,9 @@ public class ZombieList {
 	}
 
 	public boolean damage(Position p, int damage) {
-		for (Zombie z : zList) {
-			if (z.isInPosition(p) && z.isAlive()) {
-				z.receiveAttack(damage);
+		for (int i = 0; i< this.numberOfZombies; i++) {
+			if (zList[i].isInPosition(p) && zList[i].isAlive()) {
+				zList[i].receiveAttack(damage);
 				return true;
 			}
 		}
@@ -38,8 +41,8 @@ public class ZombieList {
 	}
 
 	public boolean isEmpty(Position p) {
-		for (Zombie z : zList) {
-			if (z.isInPosition(p) && z.isAlive()) {
+		for (int i = 0; i< this.numberOfZombies; i++) {
+			if (zList[i].isInPosition(p) && zList[i].isAlive()) {
 				return false;
 			}
 		}
@@ -47,16 +50,38 @@ public class ZombieList {
 	}
 
 	public void update() {
-		for (Zombie z : zList)
-			z.update();
+		for (int i = 0; i< this.numberOfZombies; i++)
+			zList[i].update();
 		removeDead();
 	}
 
 	public void removeDead() {
-		
+		int i = 0; 
+		while(i < this.numberOfZombies) {
+			if(!zList[i].isAlive()) {
+				removeFromIndex(i); 
+			}
+			else {
+				i++; 
+			}
+		}
 	}
 
 	public boolean anyInColumn(int column) {
-		return false;
+		Position targetCol = new Position(0, column);
+		for (int i = 0; i< this.numberOfZombies; i++) {
+			if(zList[i].isAlive() && zList[i].isVerticallyAligned(targetCol)) {
+				return true; 
+			}
+		}
+		return false; 
+	}
+	
+	private void removeFromIndex(int index) {
+		for(int i = index; i < this.numberOfZombies-1; i++) {
+			zList[i] = zList[i+1]; 
+		}
+		zList[this.numberOfZombies- 1] = null; 
+		this.numberOfZombies--; 
 	}
 }

@@ -49,10 +49,7 @@ public class Sunflower {
 	}
 	
 	public void receiveDamage(int damage) {
-		this.health -= damage;
-		if (this.health < 0) {
-			this.health = 0;
-		}
+		this.health = Math.max(0, this.health - damage); 
 	}
 	public static String shortName() {
 		return "S";

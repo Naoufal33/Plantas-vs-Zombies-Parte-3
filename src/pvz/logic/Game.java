@@ -116,7 +116,7 @@ public class Game {
 	}
 
 	public boolean attackZombie(Position p, int damage) {
-		return zombiesManager.damage(p, damage);
+		return zombiesManager.damageZombie(p, damage);
 	}
 
 	public void attackPlant(Position p, int damage) {

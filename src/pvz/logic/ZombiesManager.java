@@ -3,6 +3,7 @@ package pvz.logic;
 import java.util.Random;
 
 import pvz.control.Level;
+import pvz.logic.gameObjects.Zombie;
 
 /**
  * Manages the full lifecycle of zombies for a game session.
@@ -59,11 +60,14 @@ public class ZombiesManager {
 
 	public boolean addZombie(int row) {
 		Position zombiePosition = Game.newZombiePosition(row);
-
-		boolean canAdd = this.remainingZombies > 0 && shouldAddZombie() && game.isEmpty(zombiePosition);
+		
+		boolean shouldAdd = shouldAddZombie(); 
+		boolean canAdd = this.remainingZombies > 0 && shouldAdd && game.isEmpty(zombiePosition);
 
 		if (canAdd) {
-			// TODO fill your code
+			Zombie z = new Zombie(zombiePosition, game);
+			zombies.add(z);
+			this.remainingZombies--; 
 		}
 		return canAdd;
 	}
@@ -73,15 +77,13 @@ public class ZombiesManager {
 	}
 
 	public int getRemainingZombies() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.remainingZombies; 
 	}
 	public boolean doZombiesReachedTheHouse() {
 		return zombies.anyInColumn(-1); 
 	}
 	public String iconInPosition(Position position) {
-		// TODO Auto-generated method stub
-		return null;
+		return zombies.iconInPosition(position); 
 	}
 	
 	public boolean isEmpty(Position pos) {
@@ -92,7 +94,7 @@ public class ZombiesManager {
 		removeDead(); 
 	}
 	public boolean allZombiesWereKilled() {
-		return false; 
+		return this.remainingZombies == 0 && zombies.size() == 0; 
 	}
 	public void removeDead() {
 		zombies.removeDead();

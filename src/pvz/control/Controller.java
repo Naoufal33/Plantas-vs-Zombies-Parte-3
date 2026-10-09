@@ -22,12 +22,10 @@ public class Controller {
 
 	private final Game game;
 	private final GameView view;
-	private boolean exit;
 
 	public Controller(Game game) {
 		this.game = game;
 		this.view = new GamePrinter(game);
-		this.exit = false;
 	}
 
 	/**
@@ -35,7 +33,7 @@ public class Controller {
 	 */
 	public void run() {
 		view.showGame();
-		while (!this.exit) {
+		while (!game.hasGameFinished()) {
 			String words[] = view.getPrompt();
 			String msg = parseUserInput(words);
 
@@ -81,6 +79,7 @@ public class Controller {
 				}
 				//Crear la planta y repintamos el tablero
 				game.addGameObject(plantName, pos);
+				game.update();
 				view.showGame();
 				return null;
 			} else if (s.equals("l") || s.equals("list")) {
@@ -92,7 +91,7 @@ public class Controller {
 			} else if (s.equals("h") || s.equals("help")) {
 				return Messages.HELP;
 			} else if (s.equals("e") || s.equals("exit")) {
-				this.exit = true;
+				game.quit();
 
 			} else if (s.isEmpty() || s.equals("n") || s.equals("none")) {
 				game.update();

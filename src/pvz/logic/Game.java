@@ -72,8 +72,8 @@ public class Game {
 		return this.zombiesManager.getRemainingZombies();
 	}
 
-	public int hasGameFinished() {
-		return 0;
+	public boolean hasGameFinished() {
+		return false;
 	}
 
 	public boolean playerWins() {
@@ -81,10 +81,11 @@ public class Game {
 	}
 
 	public boolean playerQuits() {
-		return false;
+		return this.playerQuit;
 	}
 
 	public void quit() {
+		this.playerQuit = true;
 	}
 
 	public void update() {
@@ -107,7 +108,7 @@ public class Game {
 	}
 
 	public void generateCoins(int amount) {
-
+		this.coins += amount;
 	}
 
 	private void buyWithCoins(int cost) {
@@ -127,10 +128,14 @@ public class Game {
 				&& (sunflowerList == null || sunflowerList.isEmpty(pos))
 				&& (zombiesManager == null || zombiesManager.isEmpty(pos));
 	}
+	
+	public boolean isPlant(Position p) {
+	    return (peashooterList != null && !peashooterList.isEmpty(p))
+	            || (sunflowerList != null && !sunflowerList.isEmpty(p));
+	}
 
 	public static Position newZombiePosition(int row) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Position(row, NUM_COLS - 1);
 	}
 
 	public boolean isInsideBoard(Position p) {

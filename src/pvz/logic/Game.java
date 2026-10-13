@@ -73,11 +73,11 @@ public class Game {
 	}
 
 	public boolean hasGameFinished() {
-		return false;
+		return playerQuits() || playerWins() || zombiesManager.doZombiesReachedTheHouse();
 	}
 
 	public boolean playerWins() {
-		return false;
+		return zombiesManager.allZombiesWereKilled();
 	}
 
 	public boolean playerQuits() {
@@ -89,18 +89,30 @@ public class Game {
 	}
 
 	public void update() {
+		this.cycles++;
+		this.sunflowerList.update();
+		this.peashooterList.update();
+		this.zombiesManager.update();
+		this.zombiesManager.addZombie();
+		this.sunflowerList.removeDead();
+		this.peashooterList.removeDead();
 	}
 
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		this.rand = new Random(this.longSeed);
+		this.cycles = 0;
+		this.coins = INITIAL_COINS;
+		this.playerQuit = false;
+		this.peashooterList = new PeashooterList();
+		this.sunflowerList = new SunflowerList();
+		this.zombiesManager = new ZombiesManager(this, this.level, this.rand);
 	}
 
 	public void addGameObject(String plantName, Position pos) {
-		if (plantName.equals(Peashooter.shortName()) || plantName.equals(Peashooter.longName())) {
+		if (plantName.equalsIgnoreCase(Peashooter.shortName()) || plantName.equalsIgnoreCase(Peashooter.longName())) {
 			this.peashooterList.add(new Peashooter(pos, this));
 			buyWithCoins(Peashooter.COST);
-		} else if (plantName.equals("s") || plantName.equals("sunflower")) {
+		} else if (plantName.equalsIgnoreCase(Sunflower.shortName()) || plantName.equalsIgnoreCase(Sunflower.longName())) {
 			this.sunflowerList.add(new Sunflower(pos, this));
 			buyWithCoins(Sunflower.COST);
 		}
@@ -120,7 +132,12 @@ public class Game {
 	}
 
 	public void attackPlant(Position p, int damage) {
-
+		if (this.peashooterList != null) {
+			this.peashooterList.receiveDamage(p, damage);
+		}
+		if (this.sunflowerList != null) {
+			this.sunflowerList.receiveDamage(p, damage);
+		}
 	}
 
 	public boolean isEmpty(Position pos) {
@@ -135,7 +152,7 @@ public class Game {
 	}
 
 	public static Position newZombiePosition(int row) {
-		return new Position(row, NUM_COLS - 1);
+		return new Position(row, NUM_COLS);
 	}
 
 	public boolean isInsideBoard(Position p) {

@@ -13,13 +13,15 @@ public class Sunflower {
 	private static final int COOLDOWN = 3; 
 	
 	private int cyclesSinceLastCoinGeneration; 
+	private boolean justPlanted;
 	private int health;
 	private Position position;
 	private Game game;
 	
 	public Sunflower(Position position, Game game) {
 		this.position = position; 
-		cyclesSinceLastCoinGeneration = 0; 
+		this.cyclesSinceLastCoinGeneration = 0; 
+		this.justPlanted = true;
 		this.health = INITIAL_HEALTH;
 		this.game = game;
 	}
@@ -41,6 +43,10 @@ public class Sunflower {
 	}
 
 	public void update() {
+		if (justPlanted) {
+			justPlanted = false;
+			return;
+		}
 		cyclesSinceLastCoinGeneration++;
 		if (cyclesSinceLastCoinGeneration == COOLDOWN) {
 			game.generateCoins(GENERATED_SUNCOINS);

@@ -1,8 +1,5 @@
 package pvz.logic;
 
-import java.util.ArrayList;
-
-import pvz.logic.gameObjects.Peashooter;
 import pvz.logic.gameObjects.Sunflower;
 
 public class SunflowerList {

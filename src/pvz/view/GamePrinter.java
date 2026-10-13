@@ -104,13 +104,11 @@ public class GamePrinter implements GameView {
 	public void showEndMessage() {
 		StringBuilder buffer = new StringBuilder(Messages.GAME_OVER);
 		buffer.append(System.lineSeparator());
-		if(game.playerWins()) {
-			buffer.append(Messages.PLAYER_WINS);
-		}
-		else if(game.playerQuits()) {
+		if (game.playerQuits()) {
 			buffer.append(Messages.PLAYER_QUITS);
-		}
-		else {
+		} else if (game.playerWins()) {
+			buffer.append(Messages.PLAYER_WINS);
+		} else {
 			buffer.append(Messages.ZOMBIES_WIN); 
 		}
 		System.out.println(buffer);

@@ -51,6 +51,9 @@ public class Zombie {
 		}
 		else if(canMove()) {
 			move(); 
+			if(game.isPlant(this.position.left())) {
+				attack(); 
+			}
 		}
 	}
 	

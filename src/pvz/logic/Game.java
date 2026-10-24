@@ -90,12 +90,13 @@ public class Game {
 
 	public void update() {
 		this.cycles++;
+		this.zombiesManager.addZombie();
 		this.sunflowerList.update();
 		this.peashooterList.update();
 		this.zombiesManager.update();
-		this.zombiesManager.addZombie();
 		this.sunflowerList.removeDead();
 		this.peashooterList.removeDead();
+		this.zombiesManager.removeDead();
 	}
 
 	public void reset() {
@@ -157,6 +158,14 @@ public class Game {
 
 	public boolean isInsideBoard(Position p) {
 		return p.row() >= 0 && p.row() < Game.NUM_ROWS && p.col() >= 0 && p.col() < Game.NUM_COLS;
+	}
+	
+	public int plantCost(String name) {
+		if (name.equals("s") || name.equals("sunflower")) {
+			return Sunflower.COST;
+		} else {
+			return Peashooter.COST;
+		}
 	}
 
 }

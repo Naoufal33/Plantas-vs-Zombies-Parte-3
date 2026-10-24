@@ -23,13 +23,12 @@ public class SunflowerList {
 	
 	
 	public boolean isEmpty(Position pos) {
-		boolean empty = true;
 		for (int i = 0; i < numberOfSunflowers; i++) {
 			if (sList[i].isInPosition(pos) && sList[i].isAlive()) {
-				empty = false;
+				return false;
 			}
 		}
-		return empty;	
+		return true;	
 	}
 	
 	

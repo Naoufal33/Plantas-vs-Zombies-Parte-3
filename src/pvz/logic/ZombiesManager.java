@@ -91,7 +91,6 @@ public class ZombiesManager {
 	}
 	public void update() {
 		zombies.update();
-		removeDead(); 
 	}
 	public boolean allZombiesWereKilled() {
 		return this.remainingZombies == 0 && zombies.size() == 0; 

@@ -8,7 +8,7 @@ public class ZombieList {
 
 	public ZombieList() {
 		this.numberOfZombies = 0;
-		zList = new Zombie[32];
+		zList = new Zombie[Game.NUM_COLS * Game.NUM_ROWS];
 	}
 
 	public int size() {
@@ -16,7 +16,7 @@ public class ZombieList {
 	}
 
 	public String iconInPosition(Position p) {
-		for(int i = 0; i< this.numberOfZombies; i++) {
+		for(int i = 0; i < this.numberOfZombies; i++) {
 			if(zList[i].isInPosition(p) && zList[i].isAlive()) {
 				return zList[i].getIcon(); 
 			}

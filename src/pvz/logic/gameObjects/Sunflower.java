@@ -15,7 +15,7 @@ public class Sunflower {
 	private int cyclesSinceLastCoinGeneration; 
 	private boolean justPlanted;
 	private int health;
-	private Position position;
+	private final Position position;
 	private Game game;
 	
 	public Sunflower(Position position, Game game) {

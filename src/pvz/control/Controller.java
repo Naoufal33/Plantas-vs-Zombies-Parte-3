@@ -71,13 +71,13 @@ public class Controller {
 					view.showError(Messages.INVALID_POSITION);
 					return null;
 				}
-				//Comprobamos si podemos comprar la planta
-				int cost = plantCost(plantName);
+				// Comprobamos si podemos comprar la planta
+				int cost = game.plantCost(plantName);
 				if (game.getCoins() < cost) {
 					view.showError(Messages.NOT_ENOUGH_COINS);
 					return null;
 				}
-				//Crear la planta y repintamos el tablero
+				// Crear la planta y repintamos el tablero
 				game.addGameObject(plantName, pos);
 				game.update();
 				view.showGame();
@@ -97,10 +97,9 @@ public class Controller {
 				game.update();
 				view.showGame();
 				return null;
-			}
-			else {
+			} else {
 				view.showError(Messages.UNKNOWN_COMMAND);
-				return null; 
+				return null;
 			}
 
 		}
@@ -112,15 +111,7 @@ public class Controller {
 	}
 
 	private boolean isValidGameObject(String objectName) {
-		return game.checkGameObject(objectName); 
-	}
-
-	private int plantCost(String name) {
-		if (name.equals("s") || name.equals("sunflower")) {
-			return Sunflower.COST;
-		} else {
-			return Peashooter.COST;
-		}
+		return game.checkGameObject(objectName);
 	}
 
 }

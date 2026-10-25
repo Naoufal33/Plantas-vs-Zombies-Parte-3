@@ -1,7 +1,7 @@
-package pvz.logic;
+package tp1.pvz.logic;
 
 
-import pvz.logic.gameObjects.Peashooter;
+import tp1.pvz.logic.gameObjects.Peashooter;
 
 public class PeashooterList {
 	private int numberOfPeashooters;

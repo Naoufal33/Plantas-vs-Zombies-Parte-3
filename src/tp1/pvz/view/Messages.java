@@ -1,7 +1,7 @@
-package pvz.view;
+package tp1.pvz.view;
 
-import pvz.control.Level;
-import pvz.logic.gameObjects.*;
+import tp1.pvz.control.Level;
+import tp1.pvz.logic.gameObjects.*;
 
 /**
  * Central repository of all user-facing string literals and format templates.

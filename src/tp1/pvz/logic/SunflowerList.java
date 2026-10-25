@@ -1,6 +1,6 @@
-package pvz.logic;
+package tp1.pvz.logic;
 
-import pvz.logic.gameObjects.Sunflower;
+import tp1.pvz.logic.gameObjects.Sunflower;
 
 public class SunflowerList {
 	

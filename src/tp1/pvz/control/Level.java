@@ -1,4 +1,4 @@
-package pvz.control;
+package tp1.pvz.control;
 
 /**
  * Difficulty preset for a game session.

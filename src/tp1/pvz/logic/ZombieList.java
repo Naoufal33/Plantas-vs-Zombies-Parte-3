@@ -1,6 +1,6 @@
-package pvz.logic;
+package tp1.pvz.logic;
 
-import pvz.logic.gameObjects.Zombie;
+import tp1.pvz.logic.gameObjects.Zombie;
 
 public class ZombieList {
 	private int numberOfZombies;

@@ -1,8 +1,8 @@
-package pvz.logic.gameObjects;
+package tp1.pvz.logic.gameObjects;
 
-import pvz.logic.Game;
-import pvz.logic.Position;
-import pvz.view.Messages;
+import tp1.pvz.logic.Game;
+import tp1.pvz.logic.Position;
+import tp1.pvz.view.Messages;
 
 public class Sunflower {
 	

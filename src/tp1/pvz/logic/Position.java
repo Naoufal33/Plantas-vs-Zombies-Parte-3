@@ -1,4 +1,4 @@
-package pvz.logic;
+package tp1.pvz.logic;
 
 import java.util.Objects;
 

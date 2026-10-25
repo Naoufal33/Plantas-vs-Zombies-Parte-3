@@ -1,10 +1,10 @@
-package pvz.logic;
+package tp1.pvz.logic;
 
 import java.util.Random;
 
-import pvz.control.Level;
-import pvz.logic.gameObjects.Peashooter;
-import pvz.logic.gameObjects.Sunflower;
+import tp1.pvz.control.Level;
+import tp1.pvz.logic.gameObjects.Peashooter;
+import tp1.pvz.logic.gameObjects.Sunflower;
 
 public class Game {
 

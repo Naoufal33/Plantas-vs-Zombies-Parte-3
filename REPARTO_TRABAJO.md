@@ -1,5 +1,6 @@
-# 🌿 Plan de Trabajo y Reparto de Tareas: Práctica 2 (Plantas vs Zombies)
+# 🌿 Plan de Trabajo y Reparto de Tareas: Práctica 2 (Parte I)
 
+**Documento de referencia:** `practica2-1.pdf` (*Plantas contra zombis refactored*)  
 **Fecha límite de entrega:** Semana del 16 de noviembre  
 **Componentes del grupo:**
 - Naoufal Kebli
@@ -7,26 +8,21 @@
 
 ---
 
-## 🎯 Objetivo General de la Práctica 2
+## 🎯 Objetivo de la Práctica 2 (Parte I)
 
-La Práctica 2 se divide en dos grandes etapas:
-1. **Parte I (Refactorización Estructural):** Reorganizar la arquitectura de la Práctica 1 aplicando principios de POO:
-   - Segregación de interfaces (`GameStatus`, `GameWorld`, `GameModel`).
-   - Patrón **Command** (desacoplar el `Controller`).
-   - Jerarquía de herencia con **`GameObject`** y callbacks con **`GameItem`** (¡prohibido `instanceof`!).
-   - Almacén único con **`GameObjectContainer`** (eliminar las 3 listas separadas).
-   - Patrón **Factory** (`PlantFactory`).
-2. **Parte II (Nuevas Mecánicas y Objetos):**
-   - Nuevas plantas: **Wall-Nut** (Nuez) y **Cherry-Bomb** (Petacereza).
-   - Nuevos zombies: **BucketHead Zombie** (Caracubo), **Sporty Zombie** (Deportista), **Explosive Zombie** (Explosivo).
-   - Sistema de **Soles del cielo** y comando **`catch`**.
-   - Comandos auxiliares: `listZombies`, `addZombie`, `cheatPlant`.
+El objetivo de esta primera parte es **exclusivamente la refactorización arquitectónica** del código de la Práctica 1 para preparar el proyecto de cara a futuras extensiones:
+- **No se añaden plantas nuevas ni zombies nuevos** en esta etapa: la funcionalidad del juego debe ser idéntica a la Práctica 1, pero con un diseño orientado a objetos limpio y desacoplado.
+- Aplicar el patrón **Command** para simplificar el `Controller`.
+- Segregar la clase `Game` mediante **interfaces** (`GameStatus`, `GameWorld`, `GameModel`).
+- Crear la jerarquía de herencia con **`GameObject`** y resolver interacciones con **callbacks en `GameItem`** (¡terminantemente prohibido usar `instanceof`!).
+- Unificar el almacén de objetos en **`GameObjectContainer`** (eliminando las listas separadas).
+- Extraer la creación de plantas al patrón **Factory** (`PlantFactory`).
 
 ---
 
 ## 👥 Reparto Equitativo de Tareas (50% / 50%)
 
-Para no pisarnos en Git, dividimos el desarrollo en **dos subsistemas complementarios**:
+Para evitar conflictos en Git y poder trabajar en paralelo, dividimos la refactorización en dos subsistemas bien delimitados:
 
 ```
                          ┌────────────────────────────────────────┐
@@ -38,103 +34,84 @@ Para no pisarnos en Git, dividimos el desarrollo en **dos subsistemas complement
                    ▼                                                   ▼
        ┌───────────────────────┐                           ┌───────────────────────┐
        │       PERSONA 1       │                           │       PERSONA 2       │
-       │ Control, Comandos     │                           │ Objetos de juego,     │
-       │ y Economía de Soles   │                           │ Contenedor y Factorías│
+       │   Patrón Command y    │                           │ Jerarquía GameObject, │
+       │      Controlador      │                           │  Container y Factory  │
        └───────────────────────┘                           └───────────────────────┘
 ```
 
 ---
 
-### 👤 Persona 1: Subsistema de Control, Comandos y Soles
+### 👤 Persona 1: Patrón Command y Controlador (Páginas 2 a 5)
 
-#### 🔹 Fase 1: Refactorización (Estructura de Comandos)
+Encargada de la interacción del usuario y la ejecución de acciones mediante comandos desacoplados.
+
 1. **Interfaces de Control y Modelo:**
-   - Crear `GameStatus` (interfaz con métodos de solo lectura para la vista: `getCycles()`, `getCoins()`, `getRemainingZombies()`, `positionToString()`, etc.).
-   - Crear `GameModel` (interfaz con métodos que los comandos usan para mutar la partida: `reset()`, `update()`, `quit()`, etc.).
-2. **Arquitectura del Patrón Command:**
-   - Crear la clase abstracta `Command` con:
-     - Atributos `name`, `shortcut`, `details`, `help`.
-     - Métodos abstractos `execute(GameModel model, GameView view)` y `create(String[] words)`.
-     - Método de búsqueda `matchCommand(String token)`.
-     - Método estático `parse(String[] commandWords)`.
-     - Lista estática `AVAILABLE_COMMANDS`.
-3. **Refactorizar `Controller.java`:**
-   - Reducir el método `run()` al nuevo bucle simplificado:
+   - `GameStatus`: Métodos de solo lectura que necesita `GamePrinter` (`getCycles()`, `getCoins()`, `getRemainingZombies()`, `positionToString()`, etc.).
+   - `GameModel`: Métodos que los comandos usan para alterar la partida (`reset()`, `update()`, `quit()`, etc.).
+2. **Clase Abstracta `Command`:**
+   - Propiedades protegidas: `name`, `shortcut`, `details`, `help`.
+   - Métodos abstractos:
+     - `execute(GameModel model, GameView view)`
+     - `create(String[] words)`
+   - Método `matchCommand(String)` para comprobar si la entrada del usuario coincide con el comando o su atajo.
+   - Método estático `Command.parse(String[] commandWords)` que recorre la lista `AVAILABLE_COMMANDS`.
+3. **Refactorización de `Controller.java`:**
+   - Reducir el método `run()` al nuevo bucle simplificado basado en comandos:
      ```java
      Command command = Command.parse(words);
-     if (command != null) command.execute(game, view);
-     else view.showError(Messages.UNKNOWN_COMMAND);
+     if (command != null) {
+         command.execute(game, view);
+     } else {
+         view.showError(Messages.UNKNOWN_COMMAND);
+     }
      ```
-4. **Implementar los Comandos Base:**
+4. **Implementación de los Comandos Concretos:**
+   - `AddPlantCommand`
+   - `ListPlantsCommand`
+   - `ResetCommand`
    - `HelpCommand`
    - `ExitCommand`
    - `NoneCommand`
-   - `ResetCommand` (con soporte opcional para `reset [<level> <seed>]`)
-   - `ListPlantsCommand`
-   - `AddPlantCommand`
-
-#### 🔹 Fase 2: Comandos Nuevos y Sistema de Soles
-1. **Nuevos Comandos:**
-   - `ListZombiesCommand` (`[l]ist[Z]ombies`)
-   - `AddZombieCommand` (`[a]dd[Z]ombie <zombie> <col> <row>`)
-   - `CheatPlantCommand` (`[C]heat[P]lant <plant> <col> <row>`)
-   - `CatchCommand` (`[C]atch <col> <row>`)
-2. **Sistema de Soles y Economía:**
-   - Implementar la caída aleatoria de soles del cielo según la frecuencia del nivel.
-   - Contadores y visualización de `Generated suns` y `Caught suns`.
-   - Lógica de atrapar el sol con `CatchCommand` y sumar sus soles al monedero.
 
 ---
 
-### 👤 Persona 2: Subsistema de Objetos, Contenedor y Factorías
+### 👤 Persona 2: Jerarquía GameObject, Contenedor y Factoría (Páginas 6 a 11)
 
-#### 🔹 Fase 1: Refactorización (Jerarquía y Almacén Único)
+Encargada del modelo de datos de los objetos, el almacén polimórfico y la gestión de ataques sin `instanceof`.
+
 1. **Interfaces de Entorno e Interacción:**
-   - Crear `GameWorld` (interfaz del entorno: `NUM_ROWS`, `NUM_COLS`, `isEmpty()`, `isInsideBoard()`, etc.).
-   - Crear `GameItem` (interfaz de callbacks sin `instanceof`: `receiveZombieAttack(int damage)`, etc.).
-2. **Clase Abstracta `GameObject`:**
-   - Hereda o implementa `GameItem`.
-   - Atributos protegidos: `GameWorld game`, `Position position`, `health`.
-   - Métodos del ciclo de vida: `onEnter()`, `update()`, `onExit()`, `isAlive()`, etc.
-   - Clases intermedias abstractas: `Plant` y `Zombie`.
-3. **Migración de Personajes Existentes:**
-   - Adaptar `Sunflower`, `Peashooter` y `CommonZombie` para heredar de `Plant` y `Zombie`.
-4. **Creación de `GameObjectContainer`:**
-   - Almacén único `List<GameObject> gameObjects = new ArrayList<>();`.
-   - Métodos: `add(GameObject object)`, `update()`, `removeDead()`, `isEmpty(Position p)`, `positionToString(Position p)`.
-   - **Eliminar definitivamente:** `SunflowerList`, `PeashooterList` y `ZombieList`.
-
-#### 🔹 Fase 2: Factorías y Nuevos Personajes
-1. **Factorías:**
-   - `PlantFactory` (con `AVAILABLE_PLANTS`, `spawnPlant(...)`, `getAvailablePlants()`).
-   - `ZombieFactory` (con `AVAILABLE_ZOMBIES`, `spawnZombie(...)`, `getAvailableZombies()`).
-2. **Nuevas Plantas:**
-   - **Wall-Nut (`WN`):** Nuez. Coste 50, resistencia 10, no ataca.
-   - **Cherry-Bomb (`c`):** Petacereza. Coste 50, resistencia 2. Explota a los 2 ciclos infligiendo 10 puntos de daño en área 3x3.
-3. **Nuevos Zombies:**
-   - **BucketHead Zombie (`Bz`):** Caracubo. Resistencia 8, velocidad estándar.
-   - **Sporty Zombie (`Sz`):** Deportista. Resistencia 2, avanza cada ciclo (`MOVE_EVERY_CYCLES = 1`).
-   - **Explosive Zombie (`Ez`):** Explosivo. Al morir detona dañando casillas adyacentes.
+   - `GameWorld`: Métodos que el juego expone a los objetos (`isEmpty`, `isInsideBoard`, etc.).
+   - `GameItem`: Interfaz con métodos de colisión y ataque mediante callbacks (`receiveZombieAttack(int damage)`, etc.) para **evitar el uso de `instanceof`**.
+2. **Jerarquía `GameObject`:**
+   - Clase abstracta `GameObject implements GameItem` con atributos `game`, `position`, `health` y métodos del ciclo de vida (`onEnter()`, `update()`, `onExit()`, `isAlive()`, etc.).
+   - Clases intermedias abstractas `Plant` y `Zombie`.
+   - Adaptar `Sunflower`, `Peashooter` y `Zombie` común a la nueva jerarquía.
+3. **Contenedor Único `GameObjectContainer`:**
+   - Almacén unificado `List<GameObject> = new ArrayList<>()`.
+   - Métodos para actualizar objetos, eliminar elementos muertos y comprobar casillas.
+   - **Eliminar definitivamente las 3 listas antiguas:** `SunflowerList`, `PeashooterList` y `ZombieList`.
+4. **Patrón Factory (`PlantFactory`):**
+   - Extraer la lógica de creación de plantas a `PlantFactory` con `AVAILABLE_PLANTS`, `spawnPlant(...)` y `getAvailablePlants()`.
 
 ---
 
 ## 🤝 Punto de Encuentro: `Game.java`
 
-`Game` es la clase coordinadora donde convergen ambos bloques:
-- Implementa las 3 interfaces: `public class Game implements GameStatus, GameWorld, GameModel`
-- Contiene y delega en el `GameObjectContainer`.
+`Game` es la clase central donde convergen ambos bloques:
+- Implementa las 3 interfaces:
+  ```java
+  public class Game implements GameStatus, GameWorld, GameModel
+  ```
+- Coordina al `GameObjectContainer` y a `ZombiesManager`.
 - Persona 1 conecta los métodos requeridos por los comandos (`GameModel` y `GameStatus`).
 - Persona 2 conecta los métodos que necesitan los objetos (`GameWorld`).
 
 ---
 
-## 🌿 Flujo de Trabajo en Git (Para evitar conflictos)
+## 🌿 Flujo de Trabajo en Git
 
-1. **Trabajar en ramas separadas:**
-   - Persona 1: `git checkout -b feature/comandos-control`
-   - Persona 2: `git checkout -b feature/objetos-container`
-2. **Integración de la Fase 1:**
-   - Cuando ambos terminen la Fase 1, se hace merge a `main` y se pasa la primera ronda de pruebas.
-3. **Integración de la Fase 2:**
-   - Se crean las ramas `feature/nuevos-comandos` y `feature/nuevas-plantas-zombies`.
-   - Se integran a `main` y se pasan los tests oficiales (`00` a `05`).
+1. **Ramas de trabajo:**
+   - Persona 1: `feature/comandos-control`
+   - Persona 2: `feature/objetos-container`
+2. **Integración:**
+   - Al terminar cada fase o funcionalidad, se hace merge a `main` y se verifica que no haya regresiones respecto a la Práctica 1.

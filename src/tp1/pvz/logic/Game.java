@@ -186,5 +186,10 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	this.longSeed = seed;
     	reset();
 	}
+@Override
+public GameItem getGameItemInPosition(Position position) {
+	// Provisional hasta que Persona 2 termine GameObjectContainer
+	return null;
+}
 }
 

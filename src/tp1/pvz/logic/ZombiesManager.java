@@ -25,14 +25,19 @@ public class ZombiesManager {
 
 	private int remainingZombies;
 
-	private ZombieList zombies;
+	private int zombiesAlived;
 
+	private boolean zombiesArrived;
+
+	
 	public ZombiesManager(Game game, Level level, Random rand) {
 		this.game = game;
 		this.level = level;
 		this.rand = rand;
 		this.remainingZombies = level.getNumberOfZombies();
-		this.zombies = new ZombieList();
+		this.zombiesAlived = 0;
+		this.zombiesArrived = false;
+
 	}
 
 	/**
@@ -60,43 +65,37 @@ public class ZombiesManager {
 
 	public boolean addZombie(int row) {
 		Position zombiePosition = Game.newZombiePosition(row);
-		
-		boolean shouldAdd = shouldAddZombie(); 
+
+		boolean shouldAdd = shouldAddZombie();
 		boolean canAdd = this.remainingZombies > 0 && shouldAdd && game.isEmpty(zombiePosition);
 
 		if (canAdd) {
 			Zombie z = new Zombie(zombiePosition, game);
-			zombies.add(z);
-			this.remainingZombies--; 
+			game.addZombie(z);
+			this.remainingZombies--;
+			this.zombiesAlived++;
 		}
 		return canAdd;
 	}
 
-	public boolean damageZombie(Position p, int damage) {
-		return this.zombies.damage(p, damage);
+	public int getRemainingZombies() {
+		return this.remainingZombies;
 	}
 
-	public int getRemainingZombies() {
-		return this.remainingZombies; 
-	}
 	public boolean doZombiesReachedTheHouse() {
-		return zombies.anyInColumn(-1); 
+		return this.zombiesArrived;
 	}
-	public String iconInPosition(Position position) {
-		return zombies.iconInPosition(position); 
-	}
-	
-	public boolean isEmpty(Position pos) {
-		return zombies.isEmpty(pos);
-	}
-	public void update() {
-		zombies.update();
-	}
+
 	public boolean allZombiesWereKilled() {
-		return this.remainingZombies == 0 && zombies.size() == 0; 
+		return this.remainingZombies == 0 && this.zombiesAlived == 0;
 	}
-	public void removeDead() {
-		zombies.removeDead();
+
+	public void zombieDead() {
+		this.zombiesAlived--;
+	}
+
+	public void zombieArrived() {
+		this.zombiesArrived = true;
 	}
 
 }

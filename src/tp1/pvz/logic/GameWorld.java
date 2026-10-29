@@ -10,15 +10,13 @@ public interface GameWorld {
 	public boolean isEmpty(Position position);
 
 	public boolean isInsideBoard(Position position);
-	
-	public boolean attackZombie(Position p, int damage);
-	
-	public void attackPlant(Position p, int damage) ; 
-	
-	public boolean isPlant(Position p); 
-	
+
 	public void generateCoins(int amount);
-	
+
 	public GameItem getGameItemInPosition(Position position);
+
+	public void zombieDied();
+
+	public void zombieArrived();
 
 }

@@ -25,28 +25,17 @@ public class Zombie extends GameObject {
 		return String.format(Messages.ZOMBIE_ICON, this.health);
 	}
 
-	public boolean isHorizontallyAligned(Position p) {
-		return position.row() == p.row();
-	}
-
-	public boolean isVerticallyAligned(Position p) {
-		return position.col() == p.col();
-	}
-
-	public void receiveAttack(int damage) {
-		this.health = Math.max(0, this.health - damage);
-	}
-
 	public void update() {
 		if (!isAlive()) {
 			return;
 		}
-		if (game.isPlant(this.position.left())) {
-			attack();
+		GameItem item = game.getGameItemInPosition(this.position.left()); 
+		if (item != null && item.receiveZombieAttack(DAMAGE)) {
 		} else if (canMove()) {
 			move();
-			if (game.isPlant(this.position.left())) {
-				attack();
+			item = game.getGameItemInPosition(this.position.left()); 
+			if (item != null) {
+				item.receiveZombieAttack(DAMAGE);
 			}
 		}
 	}
@@ -60,11 +49,10 @@ public class Zombie extends GameObject {
 		if (cyclesSinceLastMovement >= MOVE_EVERY_CYCLES) {
 			this.position = this.position.left();
 			cyclesSinceLastMovement = 0;
+			if(this.position.col() < 0) {
+				game.zombieArrived();
+			}
 		}
-	}
-
-	private void attack() {
-		game.attackPlant(this.position.left(), DAMAGE);
 	}
 
 	@Override
@@ -94,6 +82,7 @@ public class Zombie extends GameObject {
 
 	@Override
 	public void onExit() {
+		game.zombieDied();
 	}
 
 	@Override

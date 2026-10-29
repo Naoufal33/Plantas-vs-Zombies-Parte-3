@@ -2,16 +2,12 @@ package tp1.pvz.logic;
 
 import java.util.Random;
 import tp1.pvz.logic.gameObjects.GameItem;
-
-
-
+import tp1.pvz.logic.gameObjects.Plant;
+import tp1.pvz.logic.gameObjects.Zombie;
 import tp1.pvz.control.Level;
-import tp1.pvz.logic.gameObjects.GameItem;
-import tp1.pvz.logic.gameObjects.Peashooter;
-import tp1.pvz.logic.gameObjects.Sunflower;
+
 
 public class Game implements GameStatus, GameWorld, GameModel {
-
 
 	public static int NUM_ROWS = 4;
 	public static int NUM_COLS = 8;
@@ -21,8 +17,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private Long longSeed;
 	private Random rand;
 	private boolean playerQuit;
-	private SunflowerList sunflowerList;
-	private PeashooterList peashooterList;
+	private GameObjectContainer objects;
 	private ZombiesManager zombiesManager;
 	private Level level;
 
@@ -32,37 +27,13 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.rand = new Random(seed);
 		this.cycles = 0;
 		this.coins = INITIAL_COINS;
-		this.peashooterList = new PeashooterList();
-		this.sunflowerList = new SunflowerList();
+		this.objects = new GameObjectContainer();
 		this.zombiesManager = new ZombiesManager(this, level, rand);
 
 	}
 
 	public String positionToString(Position position) {
-		if (this.peashooterList != null) {
-			String icon = this.peashooterList.iconInPosition(position);
-			if (icon != null && !icon.isEmpty()) {
-				return icon;
-			}
-		}
-		if (this.sunflowerList != null) {
-			String icon = this.sunflowerList.iconInPosition(position);
-			if (icon != null && !icon.isEmpty()) {
-				return icon;
-			}
-		}
-		if (this.zombiesManager != null) {
-			String icon = this.zombiesManager.iconInPosition(position);
-			if (icon != null && !icon.isEmpty()) {
-				return icon;
-			}
-		}
-		return "";
-	}
-
-	public boolean checkGameObject(String name) {
-		return name.equalsIgnoreCase(Peashooter.shortName()) || name.equalsIgnoreCase(Peashooter.longName())
-				|| name.equalsIgnoreCase(Sunflower.shortName()) || name.equalsIgnoreCase(Sunflower.longName());
+		return this.objects.positionToString(position);
 	}
 
 	public int getCycles() {
@@ -96,12 +67,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	public void update() {
 		this.cycles++;
 		this.zombiesManager.addZombie();
-		this.sunflowerList.update();
-		this.peashooterList.update();
-		this.zombiesManager.update();
-		this.sunflowerList.removeDead();
-		this.peashooterList.removeDead();
-		this.zombiesManager.removeDead();
+		this.objects.update();
 	}
 
 	public void reset() {
@@ -109,20 +75,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.cycles = 0;
 		this.coins = INITIAL_COINS;
 		this.playerQuit = false;
-		this.peashooterList = new PeashooterList();
-		this.sunflowerList = new SunflowerList();
+		this.objects = new GameObjectContainer();
 		this.zombiesManager = new ZombiesManager(this, this.level, this.rand);
-	}
-
-	public void addGameObject(String plantName, Position pos) {
-		if (plantName.equalsIgnoreCase(Peashooter.shortName()) || plantName.equalsIgnoreCase(Peashooter.longName())) {
-			this.peashooterList.add(new Peashooter(pos, this));
-			buyWithCoins(Peashooter.COST);
-		} else if (plantName.equalsIgnoreCase(Sunflower.shortName()) || plantName.equalsIgnoreCase(Sunflower.longName())) {
-			this.sunflowerList.add(new Sunflower(pos, this));
-			buyWithCoins(Sunflower.COST);
-		}
-
 	}
 
 	public void generateCoins(int amount) {
@@ -133,28 +87,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.coins -= cost;
 	}
 
-	public boolean attackZombie(Position p, int damage) {
-		return zombiesManager.damageZombie(p, damage);
-	}
-
-	public void attackPlant(Position p, int damage) {
-		if (this.peashooterList != null) {
-			this.peashooterList.receiveDamage(p, damage);
-		}
-		if (this.sunflowerList != null) {
-			this.sunflowerList.receiveDamage(p, damage);
-		}
-	}
-
 	public boolean isEmpty(Position pos) {
-		return (peashooterList == null || peashooterList.isEmpty(pos))
-				&& (sunflowerList == null || sunflowerList.isEmpty(pos))
-				&& (zombiesManager == null || zombiesManager.isEmpty(pos));
-	}
-	
-	public boolean isPlant(Position p) {
-	    return (peashooterList != null && !peashooterList.isEmpty(p))
-	            || (sunflowerList != null && !sunflowerList.isEmpty(p));
+		return this.objects.isEmpty(pos);
 	}
 
 	public static Position newZombiePosition(int row) {
@@ -164,24 +98,29 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	public boolean isInsideBoard(Position p) {
 		return p.row() >= 0 && p.row() < Game.NUM_ROWS && p.col() >= 0 && p.col() < Game.NUM_COLS;
 	}
-	
+
 	public int plantCost(String name) {
-		if (name.equals("s") || name.equals("sunflower")) {
-			return Sunflower.COST;
-		} else {
-			return Peashooter.COST;
+		for (Plant p : PlantFactory.getAvailablePlants()) {
+			if (p.getName().equalsIgnoreCase(name) || p.getSymbol().equalsIgnoreCase(name)) {
+				return p.getCost();
+			}
 		}
+		return 0;
 	}
 
 	@Override
 	public GameItem getGameItemInPosition(Position position) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.objects.getGameItemInPosition(position);
 	}
 
 	@Override
 	public boolean isValidPlant(String plantName) {
-		return checkGameObject(plantName);
+		for (Plant p : PlantFactory.getAvailablePlants()) {
+			if (p.getName().equalsIgnoreCase(plantName) || p.getSymbol().equalsIgnoreCase(plantName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -191,7 +130,11 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
 	@Override
 	public void addPlant(String plantName, Position pos) {
-		addGameObject(plantName, pos);
+		Plant plant = PlantFactory.spawnPlant(plantName, this, pos);
+		if (plant != null) {
+			this.objects.add(plant);
+			buyWithCoins(plant.getCost());
+		}
 	}
 
 	@Override
@@ -199,5 +142,22 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.level = level;
 		this.longSeed = seed;
 		reset();
+	}
+
+	public void addZombie(Zombie z) {
+		this.objects.add(z);
+
+	}
+
+	@Override
+	public void zombieDied() {
+		this.zombiesManager.zombieDead();
+
+	}
+
+	@Override
+	public void zombieArrived() {
+		this.zombiesManager.zombieArrived();
+
 	}
 }

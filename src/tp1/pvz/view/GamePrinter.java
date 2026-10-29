@@ -10,8 +10,6 @@ import static utils.StringUtils.repeat;
 import java.util.Scanner;
 
 import tp1.pvz.logic.Game;
-import tp1.pvz.logic.GameStatus;
-import tp1.pvz.logic.GameWorld;
 import tp1.pvz.logic.Position;
 import utils.StringUtils;
 
@@ -68,7 +66,6 @@ public class GamePrinter implements GameView {
 	private String getInfo() {
 		StringBuilder buffer = new StringBuilder();
 
-		// TODO fill your code
 		buffer.append(String.format(Messages.NUMBER_OF_CYCLES, game.getCycles()));
 		buffer.append(String.format(Messages.NUMBER_OF_COINS, game.getCoins()));
 		buffer.append(String.format(Messages.REMAINING_ZOMBIES, game.getRemainingZombies()));

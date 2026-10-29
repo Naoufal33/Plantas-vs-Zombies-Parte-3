@@ -168,7 +168,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		}
 	}
 
-}
 @Override
 	public boolean isValidPlant(String plantName) {
     	return checkGameObject(plantName);
@@ -187,3 +186,5 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	this.longSeed = seed;
     	reset();
 	}
+}
+

@@ -60,5 +60,9 @@ public class Sunflower extends Plant{
 	}
 	public static String shortName() { return Messages.SUNFLOWER_SYMBOL; }
 	public static String longName() { return Messages.SUNFLOWER_NAME; }
+	@Override
+	public Plant create(Position pos, GameWorld game) {
+		return new Sunflower(pos, game); 
+	}
 
 }

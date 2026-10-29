@@ -27,6 +27,6 @@ public abstract class Plant extends GameObject {
 	}
 	
 	public abstract int getCost(); 
-	
+	public abstract Plant create(Position pos, GameWorld game);
 
 }

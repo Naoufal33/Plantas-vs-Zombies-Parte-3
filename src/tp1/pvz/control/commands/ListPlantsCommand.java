@@ -11,4 +11,22 @@ public class ListPlantsCommand extends Command {
 		      Messages.COMMAND_LIST_PLANTS_DETAILS,
 		      Messages.COMMAND_LIST_PLANTS_HELP);
 	}
-	@
+	@Override
+	public Command create(String[] words) {
+		if (words.length != 1) {
+			System.out.println(Messages.error(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER));
+			return null;
+		}
+		return this;
+	}
+	@Override
+	public void execute(GameModel model, GameView view) {
+		StringBuilder buffer = new StringBuilder();
+		// Imprime las descripciones de las plantas disponibles:
+		buffer.append(Sunflower.getDescription()).append(Messages.LINE_SEPARATOR);
+		buffer.append(Peashooter.getDescription()).append(Messages.LINE_SEPARATOR);
+		view.showMessage(buffer.toString());
+		// Nota: Cuando Persona 2 termine PlantFactory, esto se cambiará por:
+		// for (Plant plant : PlantFactory.getAvailablePlants()) { ... }
+	}
+}

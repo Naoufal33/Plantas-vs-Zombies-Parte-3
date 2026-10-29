@@ -7,7 +7,8 @@ import tp1.pvz.logic.gameObjects.GameItem;
 import tp1.pvz.logic.gameObjects.Peashooter;
 import tp1.pvz.logic.gameObjects.Sunflower;
 
-public class Game implements GameWorld{
+public class Game implements GameStatus, GameWorld, GameModel {
+
 
 	public static int NUM_ROWS = 4;
 	public static int NUM_COLS = 8;
@@ -175,4 +176,25 @@ public class Game implements GameWorld{
 		return null;
 	}
 
+	@Override
+	public boolean isValidPlant(String plantName) {
+		return checkGameObject(plantName);
+	}
+
+	@Override
+	public boolean isValidPosition(Position pos) {
+		return isInsideBoard(pos) && isEmpty(pos);
+	}
+
+	@Override
+	public void addPlant(String plantName, Position pos) {
+		addGameObject(plantName, pos);
+	}
+
+	@Override
+	public void reset(Level level, long seed) {
+		this.level = level;
+		this.longSeed = seed;
+		reset();
+	}
 }

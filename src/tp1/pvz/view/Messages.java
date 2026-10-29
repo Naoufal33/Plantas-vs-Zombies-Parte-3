@@ -1,8 +1,7 @@
 package tp1.pvz.view;
 
 import tp1.pvz.control.Level;
-import tp1.pvz.logic.gameObjects.Peashooter;
-import tp1.pvz.logic.gameObjects.Sunflower;
+
 
 /**
  * Central repository of all user-facing string literals and format templates.
@@ -172,18 +171,6 @@ public class Messages {
 
 	public static final String NO_CATCHABLE_IN_POSITION = "No sun in (%d, %d)";
 
-	// Compatibilidad temporal con el Controller antiguo mientras se implementa Command
-	public static final String[] HELP_LINES = new String[] {
-			"Available commands:",
-			"[a]dd <plant> <col> <row>: add a plant in position (col, row)",
-			"[l]ist: print the list of available plants",
-			"[r]eset: start a new game",
-			"[h]elp: print this help message",
-			"[e]xit: terminate the program",
-			"[n]one | \"\": skips cycle",
-	};
-	public static final String HELP = String.join(System.lineSeparator(), HELP_LINES);
-
 	public static final String debug(String message) {
 		return Messages.DEBUG.formatted(message);
 	}
@@ -191,6 +178,5 @@ public class Messages {
 	public static final String error(String message) {
 		return Messages.ERROR.formatted(message);
 	}
-	
-	public static final String LIST = "%s%n%s%n".formatted(new Sunflower().getDescription(), new Peashooter().getDescription());
 }
+	

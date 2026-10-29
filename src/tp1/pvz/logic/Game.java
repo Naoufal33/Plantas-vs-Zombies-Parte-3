@@ -1,6 +1,9 @@
 package tp1.pvz.logic;
 
 import java.util.Random;
+import tp1.pvz.logic.gameObjects.GameItem;
+
+
 
 import tp1.pvz.control.Level;
 import tp1.pvz.logic.gameObjects.GameItem;
@@ -197,4 +200,9 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.longSeed = seed;
 		reset();
 	}
+@Override
+public GameItem getGameItemInPosition(Position position) {
+	// Provisional hasta que Persona 2 termine GameObjectContainer
+	return null;
+}
 }

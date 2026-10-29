@@ -6,7 +6,7 @@ import tp1.pvz.control.Level;
 import tp1.pvz.logic.gameObjects.Peashooter;
 import tp1.pvz.logic.gameObjects.Sunflower;
 
-public class Game {
+public class Game implements GameStatus, GameWorld, GameModel {
 
 	public static int NUM_ROWS = 4;
 	public static int NUM_COLS = 8;

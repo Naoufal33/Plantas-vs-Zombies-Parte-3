@@ -1,10 +1,10 @@
 package tp1.pvz.logic.gameObjects;
 
-import tp1.pvz.logic.Game;
+import tp1.pvz.logic.GameWorld;
 import tp1.pvz.logic.Position;
 import tp1.pvz.view.Messages;
 
-public class Sunflower {
+public class Sunflower extends Plant{
 	
 	public static final int COST = 20;
 	private static final int DAMAGE = 0;
@@ -14,34 +14,27 @@ public class Sunflower {
 	
 	private int cyclesSinceLastCoinGeneration; 
 	private boolean justPlanted;
-	private int health;
-	private final Position position;
-	private Game game;
 	
-	public Sunflower(Position position, Game game) {
-		this.position = position; 
+	
+	public Sunflower(Position position, GameWorld game) {
+		super(game, position,INITIAL_HEALTH); 
 		this.cyclesSinceLastCoinGeneration = 0; 
 		this.justPlanted = true;
-		this.health = INITIAL_HEALTH;
-		this.game = game;
 	}
+	public Sunflower() {
+		super(null, null,0); 
+	}
+	
+	
+	@Override
 	public String getIcon() {
 		return String.format(Messages.SUNFLOWER_ICON, this.health);
 	}
-	
-	public boolean isInPosition(Position p) {
-		return this.position.equals(p);
-	}
-
-
-	public static String getDescription() {
+	@Override
+	public String getDescription() {
 		return String.format(Messages.SUNFLOWER_DESCRIPTION, COST, DAMAGE, INITIAL_HEALTH);
 	}
-	
-	public boolean isAlive() {
-		return health > 0;
-	}
-
+	@Override
 	public void update() {
 		if (justPlanted) {
 			justPlanted = false;
@@ -53,16 +46,19 @@ public class Sunflower {
 			cyclesSinceLastCoinGeneration  = 0;
 		}
 	}
-	
-	public void receiveDamage(int damage) {
-		this.health = Math.max(0, this.health - damage); 
+	@Override
+	public int getCost() {
+		return COST; 
 	}
-	public static String shortName() {
-		return "S";
+	@Override
+	public String getName() {
+		return Messages.SUNFLOWER_NAME; 
 	}
-
-	public static String longName() {
-		return "Sunflower";
+	@Override
+	public String getSymbol() {
+		return Messages.SUNFLOWER_SYMBOL;  
 	}
+	public static String shortName() { return Messages.SUNFLOWER_SYMBOL; }
+	public static String longName() { return Messages.SUNFLOWER_NAME; }
 
 }

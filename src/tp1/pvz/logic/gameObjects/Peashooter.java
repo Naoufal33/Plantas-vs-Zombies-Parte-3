@@ -1,42 +1,33 @@
 package tp1.pvz.logic.gameObjects;
 
-import tp1.pvz.logic.Game;
+import tp1.pvz.logic.GameWorld;
 import tp1.pvz.logic.Position;
 import tp1.pvz.view.Messages;
 
-public class Peashooter {
+public class Peashooter extends Plant{
 
 	public static final int COST = 50;
 	private static final int DAMAGE = 1;
 	private static final int INITIAL_HEALTH = 3;
 	
-	private int health;
-	private final Position position;
-	private Game game;
-
-	
-	public Peashooter(Position position, Game game) {
-		this.position = position;
-		health = INITIAL_HEALTH;
-		this.game = game;
+	public Peashooter(Position position, GameWorld game) {
+		super(game, position, INITIAL_HEALTH);
+	}
+	public Peashooter() {
+		super(null, null, 0); 
 	}
 
+	@Override
 	public String getIcon() {
 		return String.format(Messages.PEASHOOTER_ICON, this.health);
 	}
 
-	public boolean isInPosition(Position p) {
-		return this.position.equals(p);
-	}
-
-	public static String getDescription() {
+	@Override
+	public String getDescription() {
 		return String.format(Messages.PEASHOOTER_DESCRIPTION, COST, DAMAGE, INITIAL_HEALTH);
 	}
 
-	public boolean isAlive() {
-		return health > 0; 
-	}
-
+	@Override
 	public void update() {
 		shoot(); 
 	}
@@ -44,22 +35,28 @@ public class Peashooter {
 	private void shoot() {
 		boolean hit = false; 
 		int c = this.position.col() + 1;
-		while(c < Game.NUM_COLS && !hit) {
+		while(c < GameWorld.NUM_COLS && !hit) {
 			Position target = new Position(this.position.row(), c); 
 			hit = game.attackZombie(target, DAMAGE); 
 			c++; 
 		}
 	}
 
-	public void receiveDamage(int damage) {
-		this.health = Math.max(0, this.health - damage); 
+	@Override
+	public int getCost() {
+		return COST; 
 	}
 
-	public static String shortName() {
-		return "P";
+	@Override
+	public String getName() {
+		return Messages.PEASHOOTER_NAME; 
 	}
 
-	public static String longName() {
-		return "Peashooter";
+	@Override
+	public String getSymbol() {
+		return Messages.PEASHOOTER_SYMBOL; 
 	}
+	
+	public static String shortName() { return Messages.PEASHOOTER_SYMBOL; }
+	public static String longName() { return Messages.PEASHOOTER_NAME; }
 }

@@ -19,6 +19,6 @@ public interface GameWorld {
 	
 	public void generateCoins(int amount);
 	
-	GameItem getGameItemInPosition(Position position);
+	public GameItem getGameItemInPosition(Position position);
 
 }

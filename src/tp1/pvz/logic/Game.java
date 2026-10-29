@@ -3,10 +3,11 @@ package tp1.pvz.logic;
 import java.util.Random;
 
 import tp1.pvz.control.Level;
+import tp1.pvz.logic.gameObjects.GameItem;
 import tp1.pvz.logic.gameObjects.Peashooter;
 import tp1.pvz.logic.gameObjects.Sunflower;
 
-public class Game {
+public class Game implements GameWorld{
 
 	public static int NUM_ROWS = 4;
 	public static int NUM_COLS = 8;
@@ -166,6 +167,12 @@ public class Game {
 		} else {
 			return Peashooter.COST;
 		}
+	}
+
+	@Override
+	public GameItem getGameItemInPosition(Position position) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

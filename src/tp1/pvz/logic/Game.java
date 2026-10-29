@@ -169,3 +169,21 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	}
 
 }
+@Override
+	public boolean isValidPlant(String plantName) {
+    	return checkGameObject(plantName);
+	}
+@Override
+	public boolean isValidPosition(Position pos) {
+    	return isInsideBoard(pos) && isEmpty(pos);
+	}
+@Override
+	public void addPlant(String plantName, Position pos) {
+    	addGameObject(plantName, pos);
+	}
+@Override
+	public void reset(Level level, long seed) {
+    	this.level = level;
+    	this.longSeed = seed;
+    	reset();
+	}

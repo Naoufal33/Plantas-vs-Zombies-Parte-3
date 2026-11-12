@@ -106,6 +106,8 @@ public class Messages {
 
 	public static final String SUN_SYMBOL = "*";
 	public static final String SUN_DESCRIPTION = "Sun";
+	public static final String SUN_ICON = "*[%02d]";
+	public static final String SUN_NAME = "Sun"; 
 
 	public static final String NOT_ENOUGH_COINS = "Not enough suncoins";
 

@@ -4,26 +4,24 @@ import tp1.pvz.logic.GameWorld;
 import tp1.pvz.logic.Position;
 import tp1.pvz.view.Messages;
 
-public class Zombie extends GameObject {
+public abstract class Zombie extends GameObject {
 
-	public static final int MOVE_EVERY_CYCLES = 2;
-	private static final int DAMAGE = 1;
-	private static final int INITIAL_HEALTH = 5;
+	protected static final int DAMAGE = 1;
+	
+	protected int cyclesSinceLastMovement;
+	protected int speed;
 
-	private int cyclesSinceLastMovement;
-
-	public Zombie(Position position, GameWorld game) {
-		super(game, position, INITIAL_HEALTH);
+	public Zombie(Position position, GameWorld game, int health, int speed) {
+		super(game, position, health);
+		this.speed = speed; 
 		cyclesSinceLastMovement = 0;
+		
 	}
-
+	
 	public Zombie() {
-		this(null, null);
+		super(null, null, 0); 
 	}
 
-	public String getIcon() {
-		return String.format(Messages.ZOMBIE_ICON, this.health);
-	}
 
 	public void update() {
 		if (!isAlive()) {
@@ -46,7 +44,7 @@ public class Zombie extends GameObject {
 
 	private void move() {
 		cyclesSinceLastMovement++;
-		if (cyclesSinceLastMovement >= MOVE_EVERY_CYCLES) {
+		if (cyclesSinceLastMovement >= speed) {
 			this.position = this.position.left();
 			cyclesSinceLastMovement = 0;
 			if(this.position.col() < 0) {
@@ -63,22 +61,18 @@ public class Zombie extends GameObject {
 		}
 		return false;
 	}
-
+	
 	@Override
-	public String getName() {
-		return Messages.ZOMBIE_NAME;
-	}
+	public abstract String getName();
 
 	@Override
 	public String getDescription() {
-		return String.format(Messages.ZOMBIE_DESCRIPTION, Messages.ZOMBIE_NAME, MOVE_EVERY_CYCLES, DAMAGE,
-				INITIAL_HEALTH);
-
+		return String.format(Messages.ZOMBIE_DESCRIPTION, getName(), speed, DAMAGE,
+				health);
 	}
 
 	@Override
-	public void onEnter() {
-	}
+	public void onEnter() {}
 
 	@Override
 	public void onExit() {
@@ -86,8 +80,8 @@ public class Zombie extends GameObject {
 	}
 
 	@Override
-	public String getSymbol() {
-		return Messages.ZOMBIE_SYMBOL;
-	}
+	public abstract String getSymbol(); 
+	
+	public abstract Zombie create(Position pos, GameWorld game); 
 
 }

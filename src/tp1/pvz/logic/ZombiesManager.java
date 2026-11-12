@@ -3,7 +3,7 @@ package tp1.pvz.logic;
 import java.util.Random;
 
 import tp1.pvz.control.Level;
-import tp1.pvz.logic.gameObjects.Zombie;
+import tp1.pvz.logic.gameObjects.*;
 
 /**
  * Manages the full lifecycle of zombies for a game session.
@@ -70,7 +70,8 @@ public class ZombiesManager {
 		boolean canAdd = this.remainingZombies > 0 && shouldAdd && game.isEmpty(zombiePosition);
 
 		if (canAdd) {
-			Zombie z = new Zombie(zombiePosition, game);
+			int type = randomZombieType(); 
+			Zombie z = ZombieFactory.spawnZombie(type, game, zombiePosition);
 			game.addZombie(z);
 			this.remainingZombies--;
 			this.zombiesAlived++;
@@ -96,6 +97,10 @@ public class ZombiesManager {
 
 	public void zombieArrived() {
 		this.zombiesArrived = true;
+	}
+	
+	private int randomZombieType() {
+		return rand.nextInt(ZombieFactory.getAvailableZombies().size()); 
 	}
 
 }

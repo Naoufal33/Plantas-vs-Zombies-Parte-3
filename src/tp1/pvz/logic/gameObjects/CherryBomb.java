@@ -9,12 +9,12 @@ public class CherryBomb extends Plant {
 	public static final int COST = 50;
 	private static final int DAMAGE = 10;
 	private static final int INITIAL_HEALTH = 2;
-	
-	private int cyclesUntilExplosion; 
+
+	private int cyclesUntilExplosion;
 
 	public CherryBomb(GameWorld game, Position pos) {
-		super(game, pos,INITIAL_HEALTH);
-		this.cyclesUntilExplosion = 2; 
+		super(game, pos, INITIAL_HEALTH);
+		this.cyclesUntilExplosion = 2;
 	}
 
 	public CherryBomb() {
@@ -33,15 +33,16 @@ public class CherryBomb extends Plant {
 
 	@Override
 	public void update() {
-		if(isAlive()) {
-			this.cyclesUntilExplosion--; 
-			if(cyclesUntilExplosion == 0) explode(); 
+		if (isAlive()) {
+			this.cyclesUntilExplosion--;
+			if (cyclesUntilExplosion == 0)
+				explode();
 		}
 	}
 
 	public void explode() {
-		this.health = 0; 
-		
+		this.health = 0;
+
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class CherryBomb extends Plant {
 
 	@Override
 	public String getIcon() {
-		if(this.cyclesUntilExplosion <= 1) {
+		if (this.cyclesUntilExplosion <= 1) {
 			return String.format(Messages.CHERRY_BOMB_ABOUT_TO_EXPLODE_ICON, this.cyclesUntilExplosion);
 
 		}

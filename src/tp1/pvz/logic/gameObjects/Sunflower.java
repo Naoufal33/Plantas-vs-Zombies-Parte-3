@@ -26,11 +26,6 @@ public class Sunflower extends Plant {
 	}
 
 	@Override
-	public String getIcon() {
-		return String.format(Messages.SUNFLOWER_ICON, this.health);
-	}
-
-	@Override
 	public String getDescription() {
 		return String.format(Messages.SUNFLOWER_DESCRIPTION, COST, DAMAGE, INITIAL_HEALTH);
 	}

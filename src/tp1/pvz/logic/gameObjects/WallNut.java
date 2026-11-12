@@ -43,10 +43,6 @@ public class WallNut extends Plant {
 		return String.format(Messages.WALL_NUT_DESCRIPTION, COST, DAMAGE, INITIAL_HEALTH); 
 	}
 
-	@Override
-	public String getIcon() {
-		return String.format(Messages.WALL_NUT_ICON, this.health); 
-	}
 
 	@Override
 	public String getSymbol() {

@@ -62,12 +62,9 @@ public class Peashooter extends Plant {
 	}
 
 	public static String shortName() {
-		return Messages.PEASHOOTER_SYMBOL;
-	}
-
-	public static String longName() {
 		return Messages.PEASHOOTER_NAME;
 	}
+
 
 	@Override
 	public Plant create(Position pos, GameWorld game) {

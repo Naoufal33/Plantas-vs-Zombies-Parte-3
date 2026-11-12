@@ -79,19 +79,30 @@ public class Messages {
 	public static final String WALL_NUT_SYMBOL = "WN";
 	public static final String WALL_NUT_NAME = "Wall-Nut";
 	public static final String WALL_NUT_NAME_SHORTCUT = "[W]all-[N]ut";
+	public static final String WALL_NUT_ICON = "WN[%02d]"; 
+	public static final String WALL_NUT_DESCRIPTION = "[W]all-[N]ut: cost='%d' suncoins, damage='%d', endurance='%d'"; 
 
 	public static final String CHERRY_BOMB_SYMBOL = "c";
 	public static final String CHERRY_BOMB_NAME = "Cherry-Bomb";
 	public static final String CHERRY_BOMB_NAME_SHORTCUT = "[C]herry-Bomb";
+	public static final String CHERRY_BOMB_ICON = " c[%02d]"; 
+	public static final String CHERRY_BOMB_ABOUT_TO_EXPLODE_ICON = " C[%02d]";
+	public static final String CHERRY_BOMB_DESCRIPTION = "[C]herry-Bomb: cost='%d' suncoins, damage='%d', endurance='%d'"; 
 
 	public static final String BUCKET_HEAD_ZOMBIE_SYMBOL = "Bz";
 	public static final String BUCKET_HEAD_ZOMBIE_NAME = "BucketHead Zombie";
+	public static final String BUCKET_HEAD_ZOMBIE_ICON = "Bz[%02d]"; 
+	public static final String BUCKET_HEAD_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'"; 
 
 	public static final String SPORTY_ZOMBIE_SYMBOL = "Sz";
 	public static final String SPORTY_ZOMBIE_NAME = "Sporty Zombie";
+	public static final String SPORTY_ZOMBIE_ICON = "Sz[%02d]"; 
+	public static final String SPORTY_ZOMBIE_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'"; 
 
 	public static final String EXPLOSIVE_ZOMBIE_SYMBOL = "Ez";
 	public static final String EXPLOSIVE_ZOMBIE_NAME = "Explosive Zombie";
+	public static final String EXPLOSIVE_ZOMBIE_ICON = "Ez[%02d]";
+	public static final String EXPLOSIVE_ZOMBIE_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'"; 
 
 	public static final String SUN_SYMBOL = "*";
 	public static final String SUN_DESCRIPTION = "Sun";

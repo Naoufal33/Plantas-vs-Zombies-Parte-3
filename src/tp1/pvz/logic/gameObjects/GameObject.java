@@ -48,7 +48,7 @@ public abstract class GameObject implements GameItem {
 	public Position getPosition() {
 		return new Position(position.row(), position.col());
 	}
-	
+
 	public String getIcon() {
 		return String.format(Messages.GAME_OBJECT_ICON, getSymbol(), this.health);
 	}
@@ -59,10 +59,20 @@ public abstract class GameObject implements GameItem {
 
 	public abstract String getDescription();
 
-	public void onEnter() {}
-
-	public void onExit() {}
-
 	public abstract String getSymbol();
+
+	public void onEnter() {
+	}
+
+	public void onExit() {
+	}
+
+	public int catchSun() {
+		return 0;
+	}
+
+	public boolean isSolid() {
+		return true;
+	}
 
 }

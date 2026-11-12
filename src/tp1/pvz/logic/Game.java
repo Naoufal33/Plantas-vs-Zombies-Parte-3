@@ -1,13 +1,15 @@
 package tp1.pvz.logic;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Random;
 
+import tp1.pvz.control.Level;
 import tp1.pvz.logic.actions.GameAction;
 import tp1.pvz.logic.gameObjects.GameItem;
 import tp1.pvz.logic.gameObjects.Plant;
+import tp1.pvz.logic.gameObjects.Sun;
 import tp1.pvz.logic.gameObjects.Zombie;
-import tp1.pvz.control.Level;
-
 
 public class Game implements GameStatus, GameWorld, GameModel {
 
@@ -22,6 +24,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private GameObjectContainer objects;
 	private ZombiesManager zombiesManager;
 	private Level level;
+	private int generatedSuns;
+	private Deque<GameAction> actions;
 
 	public Game(Long seed, Level level) {
 		this.longSeed = seed;
@@ -31,6 +35,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.coins = INITIAL_COINS;
 		this.objects = new GameObjectContainer();
 		this.zombiesManager = new ZombiesManager(this, level, rand);
+		this.generatedSuns = 0;
+		this.actions = new ArrayDeque<>();
 
 	}
 
@@ -67,18 +73,30 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	}
 
 	public void update() {
-		this.cycles++;
+		executePendingActions(); 
+		
 		this.zombiesManager.addZombie();
+		
 		this.objects.update();
+		
+		boolean deadRemoved = true; 
+		while(deadRemoved || arePendingActions()) {
+			deadRemoved = this.objects.removeDead(); 
+			executePendingActions(); 
+		}
+		
+		this.cycles++;
 	}
 
 	public void reset() {
 		this.rand = new Random(this.longSeed);
 		this.cycles = 0;
+		this.generatedSuns = 0;
 		this.coins = INITIAL_COINS;
 		this.playerQuit = false;
 		this.objects = new GameObjectContainer();
 		this.zombiesManager = new ZombiesManager(this, this.level, this.rand);
+		this.actions = new ArrayDeque<>(); 
 	}
 
 	public void generateCoins(int amount) {
@@ -165,20 +183,26 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
 	@Override
 	public boolean isValidZombie(String zombieName) {
-		// TODO Auto-generated method stub
-		return false;
+		for(Zombie z: ZombieFactory.getAvailableZombies()) {
+			if(z.getName().equalsIgnoreCase(zombieName)|| z.getSymbol().equalsIgnoreCase(zombieName)) return true; 
+		}
+		return false; 
 	}
 
 	@Override
 	public void addZombie(String zombieName, Position pos) {
-		// TODO Auto-generated method stub
-		
+		if(isValidZombie(zombieName)) {
+			Zombie z = ZombieFactory.spawnZombie(zombieName, this, pos); 
+			if(z!= null) this.objects.add(z);
+		}
 	}
 
 	@Override
 	public void addPlantCheat(String plantName, Position pos) {
-		// TODO Auto-generated method stub
-		
+		Plant plant = PlantFactory.spawnPlant(plantName, this, pos);
+		if (plant != null) {
+			this.objects.add(plant);
+		}
 	}
 
 	@Override
@@ -189,20 +213,36 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
 	@Override
 	public void pushAction(GameAction gameAction) {
-		// TODO Auto-generated method stub
-		
+		this.actions.addLast(gameAction);
+	}
+	
+	public boolean arePendingActions() {
+		return !this.actions.isEmpty(); 
+	} 
+	
+	public void executePendingActions() {
+		while(!this.actions.isEmpty()) {
+			GameAction action = actions.removeFirst(); 
+			action.execute(this);
+		}
+	}
+
+	@Override
+	public void addSun() {
+		int row = rand.nextInt(NUM_ROWS);
+		int col = rand.nextInt(NUM_COLS);
+		addSun(new Position(row, col));
 	}
 
 	@Override
 	public void addSun(Position pos) {
-		// TODO Auto-generated method stub
-		
+		objects.add(new Sun(this, pos));
+		generatedSuns++;
 	}
 
 	@Override
 	public int getGeneratedSuns() {
-		// TODO Auto-generated method stub
-		return 0;
+		return generatedSuns;
 	}
 
 	@Override

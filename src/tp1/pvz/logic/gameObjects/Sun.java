@@ -6,13 +6,11 @@ import tp1.pvz.view.Messages;
 
 public class Sun extends GameObject {
 	
-	private static final int INITIAL_HEALTH = 10;
-	
-	private int health; 
+	private static final int INITIAL_HEALTH = 11;
+	private static final int SUNCOINS_VALUE = 10; 
 
 	public Sun(GameWorld game, Position pos) {
 		super(game, pos, INITIAL_HEALTH);
-		health = INITIAL_HEALTH; 
 	}
 	
 	public Sun() {
@@ -21,7 +19,7 @@ public class Sun extends GameObject {
 
 	@Override
 	public void update() {
-		health = Math.max(0, health--); 
+		receiveDamage(1);  
 	}
 
 	@Override
@@ -37,6 +35,16 @@ public class Sun extends GameObject {
 	@Override
 	public String getSymbol() {
 		return Messages.SUN_SYMBOL; 
+	}
+	@Override
+	public int catchSun() {
+		this.health = 0; 
+		return SUNCOINS_VALUE; 
+	}
+	
+	@Override
+	public boolean isSolid() {
+		return false;
 	}
 
 }

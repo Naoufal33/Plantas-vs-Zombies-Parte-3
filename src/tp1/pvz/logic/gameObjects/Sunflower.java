@@ -38,7 +38,7 @@ public class Sunflower extends Plant {
 		}
 		cyclesSinceLastCoinGeneration++;
 		if (cyclesSinceLastCoinGeneration == COOLDOWN) {
-			game.generateCoins(GENERATED_SUNCOINS);
+			game.addSun();
 			cyclesSinceLastCoinGeneration = 0;
 		}
 	}

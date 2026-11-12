@@ -2,6 +2,7 @@ package tp1.pvz.logic.gameObjects;
 
 import tp1.pvz.logic.GameWorld;
 import tp1.pvz.logic.Position;
+import tp1.pvz.logic.actions.ExplosionAction;
 import tp1.pvz.view.Messages;
 
 public class CherryBomb extends Plant {
@@ -42,7 +43,7 @@ public class CherryBomb extends Plant {
 
 	public void explode() {
 		this.health = 0;
-
+		game.pushAction(new ExplosionAction(position, DAMAGE, true));
 	}
 
 	@Override

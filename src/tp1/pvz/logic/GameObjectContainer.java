@@ -9,63 +9,87 @@ import tp1.pvz.logic.gameObjects.GameObject;
 
 public class GameObjectContainer {
 
-	private List<GameObject> gameObjects; 
-	
+	private List<GameObject> gameObjects;
+
 	public GameObjectContainer() {
-		gameObjects = new ArrayList<>(); 
+		gameObjects = new ArrayList<>();
 	}
-	
-	
+
 	public void add(GameObject o) {
-		gameObjects.add(o); 
+		gameObjects.add(o);
 		o.onEnter();
 	}
-	
+
 	public void update() {
-		for(int i = 0; i < gameObjects.size(); i++) {
-			if(gameObjects.get(i).isAlive()) {
+		for (int i = 0; i < gameObjects.size(); i++) {
+			if (gameObjects.get(i).isAlive()) {
 				gameObjects.get(i).update();
 			}
 		}
-		removeDead(); 
 	}
-	
-	public void removeDead() {
-		Iterator <GameObject> it = gameObjects.iterator(); 
-		while(it.hasNext()) {
-			GameObject obj = it.next(); 
-			if(!obj.isAlive()) {
+
+	public boolean removeDead() {
+		boolean anyRemoved = false; 
+		Iterator<GameObject> it = gameObjects.iterator();
+		while (it.hasNext()) {
+			GameObject obj = it.next();
+			if (!obj.isAlive()) {
 				obj.onExit();
 				it.remove();
+				anyRemoved = true; 
 			}
 		}
+		return anyRemoved; 
 	}
-	
+
 	public boolean isEmpty(Position pos) {
-		for(GameObject o: gameObjects) {
-			if(o.isAlive() && o.isInPosition(pos)) {
-				return false; 
+		for (GameObject o : gameObjects) {
+			if (o.isAlive() && o.isInPosition(pos) && o.isSolid()) {
+				return false;
 			}
 		}
-		return true; 
-		
+		return true;
+
 	}
-	
+
 	public GameItem getGameItemInPosition(Position pos) {
-		for(GameObject o: gameObjects) {
-			if(o.isAlive() && o.isInPosition(pos)) {
-				return o; 
+		for (GameObject o : gameObjects) {
+			if (o.isAlive() && o.isInPosition(pos) && o.isSolid()) {
+				return o;
 			}
 		}
-		return null; 
+		return null;
 	}
-	
+
 	public String positionToString(Position pos) {
-		for(GameObject o: gameObjects) {
-			if(o.isAlive() && o.isInPosition(pos)) {
-				return o.getIcon();  
+		String s = "";
+		boolean sunAdded = false;
+
+		for (GameObject o : gameObjects) {
+			if (o.isAlive() && o.isInPosition(pos)) {
+				if (!o.isSolid() && sunAdded) {
+					continue;
+				}
+				if (!s.isEmpty()) {
+					s += ' ';
+				}
+				if (!o.isSolid()) {
+					sunAdded = true;
+				}
+				s += o.getIcon().trim();
+
 			}
 		}
-		return ""; 
+		return s;
+	}
+
+	public int catchSuns(Position pos) {
+		int cont = 0;
+		for (GameObject o : gameObjects) {
+			if (o.isAlive() && o.isInPosition(pos) && !o.isSolid()) {
+				cont += o.catchSun();
+			}
+		}
+		return cont;
 	}
 }

@@ -22,6 +22,7 @@ public interface GameWorld {
 	
 	public void pushAction(GameAction gameAction);
 	
-	public void addSun(Position pos); 
+	public void addSun();
+	public void addSun(Position pos);
 
 }

@@ -2,12 +2,14 @@ package tp1.pvz.logic.gameObjects;
 
 import tp1.pvz.logic.GameWorld;
 import tp1.pvz.logic.Position;
+import tp1.pvz.logic.actions.ExplosionAction;
 import tp1.pvz.view.Messages;
 
 public class ExplosiveZombie extends Zombie {
 
 	private static final int MOVE_EVERY_CYCLES = 2;
 	private static final int INITIAL_HEALTH = 5;
+	private static final int EXPLOSION_DAMAGE = 3; 
 
 	public ExplosiveZombie(Position position, GameWorld game) {
 		super(position, game, INITIAL_HEALTH, MOVE_EVERY_CYCLES);
@@ -30,6 +32,12 @@ public class ExplosiveZombie extends Zombie {
 	@Override
 	public Zombie create(Position pos, GameWorld game) {
 		return new ExplosiveZombie(pos, game); 
+	}
+	
+	@Override 
+	public void onExit() {
+		super.onExit();
+		game.pushAction(new ExplosionAction(position, EXPLOSION_DAMAGE, false));
 	}
 
 }

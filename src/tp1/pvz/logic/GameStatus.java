@@ -12,5 +12,9 @@ public interface GameStatus {
 	public boolean playerQuits();
 
 	public boolean playerWins();
+	
+	public int getGeneratedSuns();
+	
+	public int getCaughtSuns();
 
 }

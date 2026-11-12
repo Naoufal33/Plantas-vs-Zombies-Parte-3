@@ -1,5 +1,6 @@
 package tp1.pvz.logic;
 
+import tp1.pvz.logic.actions.GameAction;
 import tp1.pvz.logic.gameObjects.GameItem;
 
 public interface GameWorld {
@@ -18,5 +19,9 @@ public interface GameWorld {
 	public void zombieDied();
 
 	public void zombieArrived();
+	
+	public void pushAction(GameAction gameAction);
+	
+	public void addSun(Position pos); 
 
 }

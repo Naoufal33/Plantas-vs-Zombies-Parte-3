@@ -1,6 +1,8 @@
 package tp1.pvz.logic;
 
 import java.util.Random;
+
+import tp1.pvz.logic.actions.GameAction;
 import tp1.pvz.logic.gameObjects.GameItem;
 import tp1.pvz.logic.gameObjects.Plant;
 import tp1.pvz.logic.gameObjects.Zombie;
@@ -159,5 +161,53 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	public void zombieArrived() {
 		this.zombiesManager.zombieArrived();
 
+	}
+
+	@Override
+	public boolean isValidZombie(String zombieName) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void addZombie(String zombieName, Position pos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addPlantCheat(String plantName, Position pos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean catchSun(Position pos) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void pushAction(GameAction gameAction) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addSun(Position pos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getGeneratedSuns() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getCaughtSuns() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

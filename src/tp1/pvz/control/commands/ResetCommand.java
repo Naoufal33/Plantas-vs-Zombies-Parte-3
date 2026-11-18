@@ -32,7 +32,7 @@ public class ResetCommand extends Command {
 				long s = Long.parseLong(words[2]);
 				return new ResetCommand(lvl, s);
 			} catch (NumberFormatException e) {
-				System.out.println(Messages.error(Messages.SEED_NOT_A_NUMBER));
+				System.out.println(Messages.error(String.format(Messages.SEED_NOT_A_NUMBER_ERROR, words[2])));
 				return null;
 			}
 		} else {

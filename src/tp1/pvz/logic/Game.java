@@ -25,6 +25,9 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private ZombiesManager zombiesManager;
 	private Level level;
 	private int generatedSuns;
+	private int caughtSuns;
+	private boolean sunCaughtThisCycle;
+	private SunsManager sunsManager;
 	private Deque<GameAction> actions;
 
 	public Game(Long seed, Level level) {
@@ -35,7 +38,10 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.coins = INITIAL_COINS;
 		this.objects = new GameObjectContainer();
 		this.zombiesManager = new ZombiesManager(this, level, rand);
+		this.sunsManager = new SunsManager(this);
 		this.generatedSuns = 0;
+		this.caughtSuns = 0;
+		this.sunCaughtThisCycle = false;
 		this.actions = new ArrayDeque<>();
 
 	}
@@ -73,9 +79,11 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	}
 
 	public void update() {
+		this.sunCaughtThisCycle = false;
 		executePendingActions(); 
 		
 		this.zombiesManager.addZombie();
+		this.sunsManager.update();
 		
 		this.objects.update();
 		
@@ -92,10 +100,13 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.rand = new Random(this.longSeed);
 		this.cycles = 0;
 		this.generatedSuns = 0;
+		this.caughtSuns = 0;
+		this.sunCaughtThisCycle = false;
 		this.coins = INITIAL_COINS;
 		this.playerQuit = false;
 		this.objects = new GameObjectContainer();
 		this.zombiesManager = new ZombiesManager(this, this.level, this.rand);
+		this.sunsManager = new SunsManager(this);
 		this.actions = new ArrayDeque<>(); 
 	}
 
@@ -207,7 +218,16 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
 	@Override
 	public boolean catchSun(Position pos) {
-		// TODO Auto-generated method stub
+		if (sunCaughtThisCycle) {
+			return false;
+		}
+		int caughtCoins = this.objects.catchSuns(pos);
+		if (caughtCoins > 0) {
+			this.coins += caughtCoins;
+			this.caughtSuns += caughtCoins / 10;
+			this.sunCaughtThisCycle = true;
+			return true;
+		}
 		return false;
 	}
 
@@ -247,7 +267,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
 	@Override
 	public int getCaughtSuns() {
-		// TODO Auto-generated method stub
-		return 0;
+		return caughtSuns;
 	}
 }

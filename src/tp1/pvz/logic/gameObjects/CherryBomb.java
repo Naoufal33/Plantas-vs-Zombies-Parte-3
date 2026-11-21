@@ -18,6 +18,10 @@ public class CherryBomb extends Plant {
 		this.cyclesUntilExplosion = 2;
 	}
 
+	public CherryBomb(Position pos, GameWorld game) {
+		this(game, pos);
+	}
+
 	public CherryBomb() {
 		super(null, null, 0);
 	}
@@ -35,9 +39,11 @@ public class CherryBomb extends Plant {
 	@Override
 	public void update() {
 		if (isAlive()) {
-			this.cyclesUntilExplosion--;
-			if (cyclesUntilExplosion == 0)
+			if (cyclesUntilExplosion == 0) {
 				explode();
+			} else {
+				cyclesUntilExplosion--;
+			}
 		}
 	}
 
@@ -57,17 +63,8 @@ public class CherryBomb extends Plant {
 	}
 
 	@Override
-	public String getIcon() {
-		if (this.cyclesUntilExplosion <= 1) {
-			return String.format(Messages.CHERRY_BOMB_ABOUT_TO_EXPLODE_ICON, this.cyclesUntilExplosion);
-
-		}
-		return String.format(Messages.CHERRY_BOMB_ICON, this.cyclesUntilExplosion);
-	}
-
-	@Override
 	public String getSymbol() {
-		return Messages.CHERRY_BOMB_SYMBOL;
+		return cyclesUntilExplosion == 0 ? "C" : Messages.CHERRY_BOMB_SYMBOL;
 	}
 
 }

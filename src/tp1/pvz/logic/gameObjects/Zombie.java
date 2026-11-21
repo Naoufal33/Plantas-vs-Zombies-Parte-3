@@ -29,28 +29,30 @@ public abstract class Zombie extends GameObject {
 		}
 		GameItem item = game.getGameItemInPosition(this.position.left()); 
 		if (item != null && item.receiveZombieAttack(DAMAGE)) {
+			cyclesSinceLastMovement = 0;
 		} else if (canMove()) {
-			move();
-			item = game.getGameItemInPosition(this.position.left()); 
-			if (item != null) {
-				item.receiveZombieAttack(DAMAGE);
+			if (cyclesSinceLastMovement >= speed) {
+				this.position = this.position.left();
+				cyclesSinceLastMovement = 1;
+				if (this.position.col() < 0) {
+					game.zombieArrived();
+				}
+				item = game.getGameItemInPosition(this.position.left()); 
+				if (item != null) {
+					item.receiveZombieAttack(DAMAGE);
+				}
+			} else {
+				cyclesSinceLastMovement++;
+			}
+		} else {
+			if (cyclesSinceLastMovement < speed) {
+				cyclesSinceLastMovement++;
 			}
 		}
 	}
 
 	private boolean canMove() {
 		return game.isEmpty(this.position.left());
-	}
-
-	private void move() {
-		cyclesSinceLastMovement++;
-		if (cyclesSinceLastMovement >= speed) {
-			this.position = this.position.left();
-			cyclesSinceLastMovement = 0;
-			if(this.position.col() < 0) {
-				game.zombieArrived();
-			}
-		}
 	}
 
 	@Override

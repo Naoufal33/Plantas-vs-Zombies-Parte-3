@@ -60,17 +60,20 @@ public class ZombiesManager {
 
 	public boolean addZombie() {
 		int row = randomZombieRow();
-		return addZombie(row);
+		int type = randomZombieType();
+		return addZombie(row, type);
 	}
 
 	public boolean addZombie(int row) {
+		return addZombie(row, randomZombieType());
+	}
+
+	public boolean addZombie(int row, int type) {
 		Position zombiePosition = Game.newZombiePosition(row);
 
-		boolean shouldAdd = shouldAddZombie();
-		boolean canAdd = this.remainingZombies > 0 && shouldAdd && game.isEmpty(zombiePosition);
+		boolean canAdd = this.remainingZombies > 0 && shouldAddZombie();
 
 		if (canAdd) {
-			int type = randomZombieType(); 
 			Zombie z = ZombieFactory.spawnZombie(type, game, zombiePosition);
 			game.addZombie(z);
 			this.remainingZombies--;

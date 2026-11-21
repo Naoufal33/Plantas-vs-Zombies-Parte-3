@@ -62,25 +62,21 @@ public class GameObjectContainer {
 	}
 
 	public String positionToString(Position pos) {
-		String s = "";
+		StringBuilder sb = new StringBuilder();
 		boolean sunAdded = false;
 
 		for (GameObject o : gameObjects) {
 			if (o.isAlive() && o.isInPosition(pos)) {
-				if (!o.isSolid() && sunAdded) {
-					continue;
-				}
-				if (!s.isEmpty()) {
-					s += ' ';
-				}
 				if (!o.isSolid()) {
+					if (sunAdded) {
+						continue;
+					}
 					sunAdded = true;
 				}
-				s += o.getIcon().trim();
-
+				sb.append(o.getIcon());
 			}
 		}
-		return s;
+		return sb.toString();
 	}
 
 	public int catchSuns(Position pos) {

@@ -10,11 +10,13 @@ public abstract class Zombie extends GameObject {
 	
 	protected int cyclesSinceLastMovement;
 	protected int speed;
+	protected boolean diedByExplosion; 
 
 	public Zombie(Position position, GameWorld game, int health, int speed) {
 		super(game, position, health);
 		this.speed = speed; 
 		cyclesSinceLastMovement = 0;
+		diedByExplosion = false; 
 		
 	}
 	
@@ -78,6 +80,8 @@ public abstract class Zombie extends GameObject {
 
 	@Override
 	public void onExit() {
+		if(diedByExplosion) game.updateScore(20);
+		else game.updateScore(10); 
 		game.zombieDied();
 	}
 
@@ -85,5 +89,16 @@ public abstract class Zombie extends GameObject {
 	public abstract String getSymbol(); 
 	
 	public abstract Zombie create(Position pos, GameWorld game); 
+	
+	@Override
+	public boolean receiveExplosion(int damage) {
+		if(this.isAlive()) {
+			receiveDamage(damage); 
+			if(!this.isAlive()) this.diedByExplosion = true;
+			return true; 
+		} 
+		
+		return false; 
+	}
 
 }

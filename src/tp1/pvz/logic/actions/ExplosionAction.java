@@ -29,7 +29,7 @@ public class ExplosionAction implements GameAction {
 				GameItem item = game.getGameItemInPosition(p);
 				if (item != null) {
 					if (attacksZombie) {
-						item.receivePlantAttack(damage);
+						item.receiveExplosion(damage);
 					} else {
 						item.receiveZombieAttack(damage);
 					}

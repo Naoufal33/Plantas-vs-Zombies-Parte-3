@@ -74,5 +74,8 @@ public abstract class GameObject implements GameItem {
 	public boolean isSolid() {
 		return true;
 	}
+	public boolean receiveExplosion(int damage) {
+		return false; 
+	}
 
 }

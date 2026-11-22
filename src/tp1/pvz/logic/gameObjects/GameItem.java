@@ -11,5 +11,7 @@ public interface GameItem {
 	public boolean receivePlantAttack(int damage); 
 	
 	public boolean receiveZombieAttack(int damage); 
+	
+	public boolean receiveExplosion(int damage); 
 
 }

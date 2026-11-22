@@ -24,5 +24,7 @@ public interface GameWorld {
 	
 	public void addSun();
 	public void addSun(Position pos);
+	
+	public void updateScore(int newScore); 
 
 }

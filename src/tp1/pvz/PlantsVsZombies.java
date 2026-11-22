@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import tp1.pvz.control.Controller;
 import tp1.pvz.control.Level;
+import tp1.pvz.exceptions.GameException;
 import tp1.pvz.logic.Game;
 import tp1.pvz.view.Messages;
 
@@ -64,9 +65,14 @@ public class PlantsVsZombies {
 		System.out.println(String.format(Messages.CONFIGURED_LEVEL, level.name()));
 		System.out.println(String.format(Messages.CONFIGURED_SEED, seed));
 
-		Game game = new Game(seed, level);
-		Controller controller = new Controller(game);
-		controller.run();
+		try {
+			Game game = new Game(seed, level);
+			Controller controller = new Controller(game);
+			controller.run();
+		}
+		catch(GameException e) {
+			System.out.println(Messages.error(e.getMessage())); 
+		}
 	}
 
 }

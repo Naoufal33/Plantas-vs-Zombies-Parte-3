@@ -16,5 +16,7 @@ public interface GameStatus {
 	public int getGeneratedSuns();
 	
 	public int getCaughtSuns();
+	
+	public int getScore(); 
 
 }

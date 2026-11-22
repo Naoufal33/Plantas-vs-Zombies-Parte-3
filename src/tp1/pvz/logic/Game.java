@@ -5,11 +5,14 @@ import java.util.Deque;
 import java.util.Random;
 
 import tp1.pvz.control.Level;
+import tp1.pvz.exceptions.RecordException;
 import tp1.pvz.logic.actions.GameAction;
 import tp1.pvz.logic.gameObjects.GameItem;
 import tp1.pvz.logic.gameObjects.Plant;
 import tp1.pvz.logic.gameObjects.Sun;
 import tp1.pvz.logic.gameObjects.Zombie;
+import tp1.pvz.logic.record.FileRecordsManager;
+import tp1.pvz.logic.record.RecordsManager;
 
 public class Game implements GameStatus, GameWorld, GameModel {
 
@@ -29,8 +32,10 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private boolean sunCaughtThisCycle;
 	private SunsManager sunsManager;
 	private Deque<GameAction> actions;
+	private RecordsManager recordsManager; 
+	private int score; 
 
-	public Game(Long seed, Level level) {
+	public Game(Long seed, Level level) throws RecordException{
 		this.longSeed = seed;
 		this.level = level;
 		this.rand = new Random(seed);
@@ -43,6 +48,9 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.caughtSuns = 0;
 		this.sunCaughtThisCycle = false;
 		this.actions = new ArrayDeque<>();
+		this.recordsManager = new FileRecordsManager(); 
+		this.recordsManager.load();
+		this.score = 0;  
 
 	}
 
@@ -66,15 +74,15 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		return playerQuits() || playerWins() || zombiesManager.doZombiesReachedTheHouse();
 	}
 
-	public boolean playerWins() {
-		return zombiesManager.allZombiesWereKilled();
+	public boolean playerWins(){
+		return zombiesManager.allZombiesWereKilled();	
 	}
 
 	public boolean playerQuits() {
 		return this.playerQuit;
 	}
 
-	public void quit() {
+	public void quit(){
 		this.playerQuit = true;
 	}
 
@@ -107,7 +115,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.objects = new GameObjectContainer();
 		this.zombiesManager = new ZombiesManager(this, this.level, this.rand);
 		this.sunsManager = new SunsManager(this);
-		this.actions = new ArrayDeque<>(); 
+		this.actions = new ArrayDeque<>();  
+		this.score = 0; 
 	}
 
 	public void generateCoins(int amount) {
@@ -268,5 +277,28 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	@Override
 	public int getCaughtSuns() {
 		return caughtSuns;
+	}
+	
+	public void updateScore(int newScore) {
+		score+=newScore; 
+	}
+
+	@Override
+	public int getScore() {
+		return score; 
+	}
+
+	@Override
+	public int getRecord() {
+		return recordsManager.getRecord(level); 
+	}
+	
+	public void updateRecord() throws RecordException {
+	    recordsManager.updateRecord(this.level, this.score);
+	}
+
+	@Override
+	public Level getLevel() {
+		return this.level; 
 	}
 }

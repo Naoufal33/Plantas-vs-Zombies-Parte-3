@@ -9,6 +9,7 @@ import static utils.StringUtils.repeat;
 
 import java.util.Scanner;
 
+import tp1.pvz.exceptions.RecordException;
 import tp1.pvz.logic.Game;
 import tp1.pvz.logic.Position;
 import utils.StringUtils;
@@ -71,6 +72,7 @@ public class GamePrinter implements GameView {
 		buffer.append(String.format(Messages.REMAINING_ZOMBIES, game.getRemainingZombies()));
 		buffer.append(String.format(Messages.GENERATED_SUNS, game.getGeneratedSuns()));
 		buffer.append(String.format(Messages.CAUGHT_SUNS, game.getCaughtSuns()));
+		buffer.append(String.format(Messages.POINTS,game.getScore())); 
 
 		return buffer.toString();
 	}
@@ -102,9 +104,10 @@ public class GamePrinter implements GameView {
 
 	/**
 	 * Prints the message to be printed once the game has finished.
+	 * @throws RecordException 
 	 */
 	@Override
-	public void showEndMessage() {
+	public void showEndMessage(){
 		StringBuilder buffer = new StringBuilder(Messages.GAME_OVER);
 		buffer.append(System.lineSeparator());
 		if (game.playerQuits()) {

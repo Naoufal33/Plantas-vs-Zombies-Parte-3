@@ -28,4 +28,7 @@ public interface GameModel {
 	void addPlantCheat(String plantName, Position pos);
 	
 	boolean catchSun(Position pos); 
+	
+	int getRecord();
+	Level getLevel(); 
 }

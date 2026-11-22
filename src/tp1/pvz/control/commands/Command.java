@@ -33,6 +33,7 @@ public abstract class Command {
 		new ListPlantsCommand(),
 		new ListZombiesCommand(),
 		new ResetCommand(),
+		new ShowRecordCommand(), 
 		new HelpCommand(),
 		new ExitCommand(),
 		new NoneCommand()

@@ -2,9 +2,16 @@ package tp1.pvz.view;
 
 import tp1.pvz.control.Level;
 
-
 /**
  * Central repository of all user-facing string literals and format templates.
+ *
+ * <p>Keeps UI text out of logic and control classes. Every string that appears
+ * on the console — prompts, error messages, plant descriptions, icons, and
+ * end-of-game banners — is defined here as a {@code public static final}
+ * constant. Format strings follow {@link String#format} conventions.
+ *
+ * <p>This class is not instantiable; it is a pure namespace for constants and
+ * two formatting helpers ({@link #debug} and {@link #error}).
  */
 public class Messages {
 
@@ -48,9 +55,15 @@ public class Messages {
 
 	public static final String COMMAND_INCORRECT_PARAMETER_NUMBER = "Incorrect parameter number";
 
+	public static final String INVALID_LEVEL = "Invalid level";
+
+	public static final String INVALID_SEED = "Invalid seed";
+
 	public static final String INVALID_POSITION = "Invalid position";
 
-	public static final String INVALID_GAME_OBJECT = String.format("Invalid object%n");
+	public static final String ALREADY_OCCUPIED_POSITION = "This position is already occupied";
+
+	public static final String INVALID_GAME_OBJECT = "Invalid object: %s";
 
 	public static final String INVALID_COMMAND = "Invalid command";
 
@@ -67,47 +80,34 @@ public class Messages {
 	public static final String SUNFLOWER_SYMBOL = "S";
 	public static final String SUNFLOWER_NAME = "Sunflower";
 	public static final String SUNFLOWER_DESCRIPTION = "[S]unflower: cost='%d' suncoins, damage='%d', endurance='%d'";
-	public static final String SUNFLOWER_ICON = " S[%02d]";
 	public static final String SUNFLOWER_NAME_AND_SHORTCUT = "[S]unflower";
 
 	public static final String ZOMBIE_SYMBOL = "Z";
 	public static final String ZOMBIE_NAME = "Zombie";
 	public static final String ZOMBIE_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'";
-	public static final String ZOMBIE_ICON = " Z[%02d]";
-	public static final String ZOMBIE_NAME_AND_SHORTCUT = "[Z]ombie";
 
 	public static final String WALL_NUT_SYMBOL = "WN";
 	public static final String WALL_NUT_NAME = "Wall-Nut";
 	public static final String WALL_NUT_NAME_SHORTCUT = "[W]all-[N]ut";
-	public static final String WALL_NUT_ICON = "WN[%02d]"; 
-	public static final String WALL_NUT_DESCRIPTION = "[W]all-[N]ut: cost='%d' suncoins, damage='%d', endurance='%d'"; 
+	public static final String WALL_NUT_DESCRIPTION = "[W]all-[N]ut: cost='%d' suncoins, damage='%d', endurance='%d'";
 
 	public static final String CHERRY_BOMB_SYMBOL = "c";
 	public static final String CHERRY_BOMB_NAME = "Cherry-Bomb";
 	public static final String CHERRY_BOMB_NAME_SHORTCUT = "[C]herry-Bomb";
-	public static final String CHERRY_BOMB_ICON = " c[%02d]"; 
-	public static final String CHERRY_BOMB_ABOUT_TO_EXPLODE_ICON = " C[%02d]";
-	public static final String CHERRY_BOMB_DESCRIPTION = "[C]herry-Bomb: cost='%d' suncoins, damage='%d', endurance='%d'"; 
+	public static final String CHERRY_BOMB_DESCRIPTION = "[C]herry-Bomb: cost='%d' suncoins, damage='%d', endurance='%d'";
 
 	public static final String BUCKET_HEAD_ZOMBIE_SYMBOL = "Bz";
 	public static final String BUCKET_HEAD_ZOMBIE_NAME = "BucketHead Zombie";
-	public static final String BUCKET_HEAD_ZOMBIE_ICON = "Bz[%02d]"; 
-	public static final String BUCKET_HEAD_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'"; 
 
 	public static final String SPORTY_ZOMBIE_SYMBOL = "Sz";
 	public static final String SPORTY_ZOMBIE_NAME = "Sporty Zombie";
-	public static final String SPORTY_ZOMBIE_ICON = "Sz[%02d]"; 
-	public static final String SPORTY_ZOMBIE_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'"; 
 
 	public static final String EXPLOSIVE_ZOMBIE_SYMBOL = "Ez";
 	public static final String EXPLOSIVE_ZOMBIE_NAME = "Explosive Zombie";
-	public static final String EXPLOSIVE_ZOMBIE_ICON = "Ez[%02d]";
-	public static final String EXPLOSIVE_ZOMBIE_DESCRIPTION = "%s: speed='%d', damage='%d', endurance='%d'"; 
 
 	public static final String SUN_SYMBOL = "*";
+	public static final String SUN_NAME = "Sun";
 	public static final String SUN_DESCRIPTION = "Sun";
-	public static final String SUN_ICON = "*[%02d]";
-	public static final String SUN_NAME = "Sun"; 
 
 	public static final String NOT_ENOUGH_COINS = "Not enough suncoins";
 
@@ -118,6 +118,8 @@ public class Messages {
 	public static final String GENERATED_SUNS = "Generated suns: %d%n";
 
 	public static final String CAUGHT_SUNS = "Caught suns: %d%n";
+
+	public static final String POINTS = "Score: %d%n";
 
 	public static final String REMAINING_ZOMBIES = "Remaining zombies: %d%n";
 	
@@ -182,14 +184,40 @@ public class Messages {
 	public static final String COMMAND_CATCH_DETAILS = "[C]atch <col> <row>";
 	public static final String COMMAND_CATCH_HELP = "catch a sun, if possible, in position (col, row)";
 
-	public static final String NO_CATCHABLE_IN_POSITION = "No sun in (%d, %d)";
+	public static final String COMMAND_RECORD_NAME = "record";
+	public static final String COMMAND_RECORD_SHORTCUT = "o";
+	public static final String COMMAND_RECORD_DETAILS = "Rec[o]rd";
+	public static final String COMMAND_RECORD_HELP = "show record of the current level";
 
+	public static final String RECORD = "%s record is %d";
+
+	public static final String RECORD_FILE_NOT_FOUND = "Record file '%s' does not exist";
+	public static final String RECORD_FILE_NOT_READABLE = "Record file '%s' cannot be read";
+	public static final String RECORD_FILE_CORRUPTED = "Record file '%s' is corrupted: invalid line '%s'";
+	public static final String RECORD_FILE_NOT_WRITABLE = "Record file '%s' cannot be written";
+
+	public static final String NO_CATCHABLE_IN_POSITION = "No sun in (%d, %d)";
+	public static final String ALREADY_CAUGHT_SUN = "A sun has been caught in this cycle";
+
+	/**
+	 * Formats a debug message.
+	 * 
+	 * @param message debug message
+	 * 
+	 * @return the formated debug message;
+	 */
 	public static final String debug(String message) {
 		return Messages.DEBUG.formatted(message);
 	}
 
+	/**
+	 * Formats an error message.
+	 * 
+	 * @param message Error message
+	 * 
+	 * @return the formated error message;
+	 */
 	public static final String error(String message) {
 		return Messages.ERROR.formatted(message);
 	}
 }
-	

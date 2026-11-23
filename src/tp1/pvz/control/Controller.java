@@ -1,5 +1,6 @@
 package tp1.pvz.control;
 import tp1.pvz.control.commands.Command;
+import tp1.pvz.exceptions.GameException; 
 import tp1.pvz.exceptions.RecordException;
 import tp1.pvz.logic.Game;
 import tp1.pvz.logic.GameModel;
@@ -22,11 +23,15 @@ public class Controller {
 		view.showGame();
 		while (!game.hasGameFinished()) {
 			String[] words = view.getPrompt();
-			Command command = Command.parse(words);
+			try {
+				Command command = Command.parse(words);
 			if (command != null) {
 				command.execute(game, view);
 			}
-		}
+		}   catch (GameException e) {
+              view.showError(e.getMessage());
+        }
+    }
 		try {
 			game.updateRecord();
 		}

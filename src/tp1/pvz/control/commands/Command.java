@@ -5,6 +5,8 @@ import java.util.List;
 import tp1.pvz.logic.GameModel;
 import tp1.pvz.view.GameView;
 import tp1.pvz.view.Messages;
+import tp1.pvz.exceptions.CommandExecuteException;
+import tp1.pvz.exceptions.CommandParseException;
 
 public abstract class Command {
 	protected final String name;
@@ -20,8 +22,10 @@ public abstract class Command {
 	protected boolean matchCommand(String token) {
 		return token.equalsIgnoreCase(this.name) || token.equalsIgnoreCase(this.shortcut);
 	}
-	public abstract Command create(String[] words);
-	public abstract void execute(GameModel model, GameView view);
+	public abstract Command create(String[] words) throws CommandParseException;
+	
+	public abstract void execute(GameModel model, GameView view) throws CommandExecuteException;
+	
 	public String helpText() {
 		return details + Messages.HELP_DETAILS_COMMAND_HELP_SEPARATOR + help;
 	}
@@ -38,10 +42,12 @@ public abstract class Command {
 		new ExitCommand(),
 		new NoneCommand()
 	);
+	
 	public static Iterable<Command> getAvailableCommands() {
 		return Collections.unmodifiableList(AVAILABLE_COMMANDS);
 	}
-	public static Command parse(String[] commandWords) {
+	
+	public static Command parse(String[] commandWords) throws CommandParseException {
 		if (commandWords == null || commandWords.length == 0 || commandWords[0].isEmpty()) {
 			return new NoneCommand();
 		}
@@ -51,7 +57,6 @@ public abstract class Command {
 				return command.create(commandWords);
 			}
 		}
-		System.out.println(Messages.error(Messages.UNKNOWN_COMMAND));
-		return null;
+		throw new CommandParseException(Messages.UNKNOWN_COMMAND);		
 	}
 }

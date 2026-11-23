@@ -5,6 +5,8 @@ import tp1.pvz.logic.ZombieFactory;
 import tp1.pvz.logic.gameObjects.Zombie;
 import tp1.pvz.view.GameView;
 import tp1.pvz.view.Messages;
+import tp1.pvz.exceptions.CommandParseException;
+
 
 public class ListZombiesCommand extends Command {
 
@@ -16,11 +18,10 @@ public class ListZombiesCommand extends Command {
 	}
 
 	@Override
-	public Command create(String[] words) {
+	public Command create(String[] words) throws CommandParseException{
 		if (words.length != 1) {
-			System.out.println(Messages.error(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER));
-			return null;
-		}
+			throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+ 		}
 		return this;
 	}
 

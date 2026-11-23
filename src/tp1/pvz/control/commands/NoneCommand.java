@@ -3,6 +3,7 @@ package tp1.pvz.control.commands;
 import tp1.pvz.logic.GameModel;
 import tp1.pvz.view.GameView;
 import tp1.pvz.view.Messages;
+import tp1.pvz.exceptions.CommandParseException;
 public class NoneCommand extends Command {
 	public NoneCommand() {
 		super(Messages.COMMAND_UPDATE_NAME,
@@ -15,12 +16,11 @@ public class NoneCommand extends Command {
 		return token.isEmpty() || super.matchCommand(token);
 	}
 	@Override
-	public Command create(String[] words) {
-		if (words.length > 1) {
-			System.out.println(Messages.error(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER));
-			return null;
-		}
-		return this;
+	public Command create(String[] words) throws CommandParseException {
+	    if (words.length > 1) {
+	        throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+	    }
+	    return this;
 	}
 	@Override
 	public void execute(GameModel model, GameView view) {

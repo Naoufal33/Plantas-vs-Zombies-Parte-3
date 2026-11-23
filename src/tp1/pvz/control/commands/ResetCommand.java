@@ -1,6 +1,7 @@
 package tp1.pvz.control.commands;
 
 import tp1.pvz.control.Level;
+import tp1.pvz.exceptions.CommandParseException;
 import tp1.pvz.logic.GameModel;
 import tp1.pvz.view.GameView;
 import tp1.pvz.view.Messages;
@@ -19,26 +20,23 @@ public class ResetCommand extends Command {
 		this.seed = seed;
 	}
 	@Override
-	public Command create(String[] words) {
-		if (words.length == 1) {
-			return new ResetCommand(null, null);
-		} else if (words.length == 3) {
-			Level lvl = Level.valueOfIgnoreCase(words[1]);
-			if (lvl == null) {
-				System.out.println(Messages.error(Messages.ALLOWED_LEVELS));
-				return null;
-			}
-			try {
-				long s = Long.parseLong(words[2]);
-				return new ResetCommand(lvl, s);
-			} catch (NumberFormatException e) {
-				System.out.println(Messages.error(String.format(Messages.SEED_NOT_A_NUMBER_ERROR, words[2])));
-				return null;
-			}
-		} else {
-			System.out.println(Messages.error(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER));
-			return null;
-		}
+	public Command create(String[] words) throws CommandParseException {
+	    if (words.length == 1) {
+	        return new ResetCommand(null, null);
+	    } else if (words.length == 3) {
+	        Level lvl = Level.valueOfIgnoreCase(words[1]);
+	        if (lvl == null) {
+	            throw new CommandParseException(Messages.ALLOWED_LEVELS);
+	        }
+	        try {
+	            long s = Long.parseLong(words[2]);
+	            return new ResetCommand(lvl, s);
+	        } catch (NumberFormatException e) {
+	            throw new CommandParseException(String.format(Messages.SEED_NOT_A_NUMBER_ERROR, words[2]), e);
+	        }
+	    } else {
+	        throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+	    }
 	}
 	@Override
 	public void execute(GameModel model, GameView view) {
